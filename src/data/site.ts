@@ -17,7 +17,12 @@ export const site = {
   linkedin: 'https://www.linkedin.com/in/daniel-boadu-5394a0218/',
   // Put your CV at public/cv.pdf and set this to '/cv.pdf' to show the download button
   cv: '',
-  tools: ['HubSpot', 'ActiveCampaign', 'Mailchimp', 'GoHighLevel', 'Zimplify', 'Monday.com', 'Trello', 'ChatGPT', 'Claude', 'Claude Code'],
+  tools: [
+    { group: 'Email & CRM', items: ['HubSpot', 'Marketo', 'ActiveCampaign', 'Mailchimp', 'GoHighLevel', 'Kajabi', 'AWeber', 'Swoogo'] },
+    { group: 'Data & prospecting', items: ['Apollo', 'Zimplify'] },
+    { group: 'Project management', items: ['Monday.com', 'Trello'] },
+    { group: 'AI', items: ['ChatGPT', 'Claude', 'Claude Code'] },
+  ],
 };
 
 // What a recruiter should take away. Each skill points to evidence.
@@ -30,7 +35,7 @@ export const skills = [
   {
     name: 'Copywriting',
     text: 'Plain, persuasive copy for B2B and B2C audiences, written agency-side, freelance and in-house for 20+ brands.',
-    proof: { label: 'Client recommendation', href: '/#recommendation' },
+    proof: { label: 'Future awards emails', href: '/work/future-awards/#samples' },
   },
   {
     name: 'Performance analysis',
@@ -101,21 +106,33 @@ export const aiBuilds: {
   },
 ];
 
-// Career history, newest first.
-export const experience = [
+// Career history, newest first. highlights and link are optional.
+export const experience: {
+  company: string; role: string; type: string; period: string; text: string;
+  highlights?: string[]; tools?: string[]; link?: { label: string; href: string }[];
+}[] = [
   {
     company: 'Hyve Group',
     role: 'Email Marketing Co-ordinator',
     type: 'Full-time · Hybrid',
     period: 'Mar 2026 – Present',
     text: 'End-to-end email campaign execution across global event brands including Shoptalk and Groceryshop. Expanding into sequencing, segmentation and list building, and building AI tools for the team.',
+    link: [{ label: 'Shoptalk case study', href: '/work/stf26-cold-outbound/' }],
   },
   {
-    company: 'Future',
+    company: 'Future plc (Awards & Events)',
     role: 'Email Marketing Executive',
     type: 'Full-time · Remote',
     period: 'Nov 2025 – Jan 2026',
-    text: 'Copywriting, campaign planning and management, and data management for email.',
+    text: 'Performance copy and campaign execution across 20+ UK and US B2B and B2C brands, including Marie Claire, Ideal Home, SCN, AV Technology and Sound & Video Contractor.',
+    highlights: [
+      'Increased open rates by 10–15% through stronger hooks and clearer value framing in each brand\u2019s voice.',
+      'Improved conversions and entries by 10% through segmentation and personalisation by audience and intent.',
+      'Supported a 20% revenue increase on the NAMM project by building prospect lists in Apollo and shaping outreach.',
+      'Led copy and planning for the Best of Show Awards at NAMM, with the full journey built before launch.',
+    ],
+    tools: ['Swoogo', 'Apollo', 'Trello', 'Marketo'],
+    link: [{ label: 'Future awards case study', href: '/work/future-awards/' }],
   },
   {
     company: 'OANDA',
@@ -129,15 +146,48 @@ export const experience = [
     role: 'Email Marketing Manager & Copywriter',
     type: 'Contract · Remote',
     period: 'Nov 2022 – Present',
-    text: 'Email strategy and copy for the agency and its clients, including the Instant Credibility Engine offer.',
+    text: 'Lifecycle and campaign messaging across multiple offers and segments, including the Instant Credibility Engine, plus the social copy that feeds the email channel.',
+    highlights: [
+      'Lifted open rates by 15% and click-through by 12% by reworking subject lines, preview text and body flow.',
+      'Increased lead magnet sign-ups by 20% with stronger hooks, value framing and calls to action.',
+      'Built an automated welcome sequence in Kajabi that improved retention by 10% and cut inactive contacts by 8%.',
+      'Raised primary inbox placement by 25% by improving engagement signals and list quality.',
+      'Contributed to 10% revenue growth by balancing value-led sequences with offer-led pushes.',
+    ],
+    tools: ['Kajabi', 'AWeber', 'GoHighLevel'],
+  },
+  {
+    company: 'Layton Media / Vanquish Holdings',
+    role: 'Copywriter & Email Marketer',
+    type: 'Remote',
+    period: 'May 2022 – May 2023',
+    text: 'Launch, retention and automated customer journeys for online course brands, from nurture and countdown sequences to abandoned cart, onboarding and win-back.',
+    highlights: [
+      'Generated $30,000 in two months from a course launch through offer framing, urgency and objection handling.',
+      'Wrote the pre-sale sequence for a $1,000 course that sold out in two days.',
+      'Used RFM segmentation for high-value and lapsed audiences, reducing bounce rates by 10%.',
+    ],
+    tools: ['ActiveCampaign'],
+    link: [
+      { label: 'Layton Media case study', href: '/work/layton-media-launch/' },
+      { label: 'Vanquish case study', href: '/work/vanquish-presale/' },
+    ],
   },
   {
     company: 'Freelance',
     role: 'Email Marketing Manager & Copywriter',
     type: 'Freelance · Remote',
     period: 'Jun 2020 – Nov 2025',
-    text: 'Email marketing and copywriting for B2B and B2C clients in the UK and US.',
+    text: 'Email marketing and copywriting for B2B and B2C clients in the UK and US, across e-commerce, course providers, fitness, finance and events.',
   },
+];
+
+// From the CV. Shown as tags under the skills section.
+export const coreSkills = [
+  'Campaign execution & scheduling', 'Lifecycle & nurture journeys', 'Segmentation & targeting',
+  'Personalisation', 'QA (links, tracking, tokens, dynamic content, devices)', 'List hygiene & deliverability',
+  'Performance reporting', 'A/B testing', 'Tone of voice', 'Conversion copywriting',
+  'Social-to-email funnels', 'Stakeholder coordination',
 ];
 
 export const education = { name: 'BTEC Extended Diploma in Business', result: 'D*D*D*' };

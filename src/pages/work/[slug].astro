@@ -67,7 +67,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   {d.phases && (
     <section class="section off">
       <div class="wrap">
-        <div class="sec-head"><h2>The funnel</h2><span class="eyebrow">{d.phasesCaption ?? `${d.phases.length} stages`}</span></div>
+        <div class="sec-head"><h2>{d.phasesTitle ?? 'The funnel'}</h2><span class="eyebrow">{d.phasesCaption ?? `${d.phases.length} stages`}</span></div>
         <div class="phases">
           {d.phases.map((ph, i) => (
             <article class="phase">
@@ -79,6 +79,25 @@ const pad = (n: number) => String(n).padStart(2, '0');
             </article>
           ))}
         </div>
+      </div>
+    </section>
+  )}
+
+  {d.gallery && d.galleryTitle && (
+    <section id="samples" class="section light">
+      <div class="wrap">
+        <div class="sec-head"><h2>{d.galleryTitle}</h2><span class="eyebrow">{d.galleryCaption ?? `${d.gallery.length} examples`}</span></div>
+        <div class="samples">
+          {d.gallery.map((g) => (
+            <figure>
+              <a href={g.full ?? g.image} target="_blank" rel="noopener" aria-label={`Open full email: ${g.caption}`}>
+                <img src={g.image} alt={g.alt} loading="lazy" />
+              </a>
+              <figcaption>{g.caption}</figcaption>
+            </figure>
+          ))}
+        </div>
+        <p class="eyebrow samples-note">Click any email to see it in full</p>
       </div>
     </section>
   )}
@@ -98,7 +117,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
           <p>{d.proof.text}</p>
         </div>
       )}
-      {d.gallery && (
+      {d.gallery && !d.galleryTitle && (
         <div class="gallery">
           {d.gallery.map((g) => (
             <figure>
@@ -182,6 +201,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .gallery { margin-top: 36px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 20px; align-items: start; }
   .gallery figure { margin: 0; background: var(--card); border: 1px solid var(--rule); padding: 14px; max-width: 520px; }
   .gallery figcaption { margin-top: 12px; }
+  .samples { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+  .samples figure { margin: 0; display: grid; gap: 10px; align-content: start; }
+  .samples a { display: block; border: 1px solid var(--rule); overflow: hidden; background: var(--white); transition: border-color .15s, transform .15s; }
+  .samples a:hover { border-color: var(--black); transform: translateY(-2px); }
+  .samples figcaption { font-size: 14px; color: var(--muted); }
+  .samples-note { margin-top: 20px; }
   .results { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
   .result { padding: 28px 20px 28px 0; display: grid; gap: 10px; align-content: start; }
   .result + .result { padding-left: 20px; border-left: 1px solid var(--rule); }
@@ -207,6 +232,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
   @media (max-width: 1080px) { .phases { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 600px) { .phases { grid-template-columns: 1fr; } }
+  @media (max-width: 960px) { .samples { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 900px) {
     .hero-grid, .proof, .next { grid-template-columns: 1fr; }
     .sends { grid-template-columns: 1fr; }

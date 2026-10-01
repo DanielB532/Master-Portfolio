@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
-import { site, experience, skills, aiBuilds, education, recommendation } from '../data/site';
+import { site, experience, skills, aiBuilds, education, recommendation, coreSkills } from '../data/site';
 
 const work = (await getCollection('work', ({ data }) => !data.draft)).sort((a, b) => a.data.order - b.data.order);
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -44,7 +44,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
           </article>
         ))}
       </div>
-      <p class="tools"><span class="eyebrow">Tools</span>{site.tools.join(' · ')}</p>
+      <div class="skill-extra">
+        <div class="core"><p class="eyebrow">Core skills</p><div class="tags">{coreSkills.map((c) => <span class="tag">{c}</span>)}</div></div>
+        <dl class="tools">
+          {site.tools.map((t) => (<div><dt class="eyebrow">{t.group}</dt><dd>{t.items.join(' · ')}</dd></div>))}
+        </dl>
+      </div>
     </div>
   </section>
 
@@ -114,6 +119,13 @@ const pad = (n: number) => String(n).padStart(2, '0');
                 <div class="exp-top"><h3>{e.role}</h3>{e.period && <span class="eyebrow">{e.period}</span>}</div>
                 <p class="exp-co"><b>{e.company}</b> · {e.type}</p>
                 <p class="exp-text">{e.text}</p>
+                {e.highlights && <ul class="exp-hl">{e.highlights.map((h) => <li>{h}</li>)}</ul>}
+                {(e.tools || e.link) && (
+                  <div class="exp-foot">
+                    {e.tools && <span class="eyebrow">Tools: {e.tools.join(' · ')}</span>}
+                    {e.link && e.link.map((l) => <a href={l.href}>{l.label} →</a>)}
+                  </div>
+                )}
               </li>
             ))}
           </ul>
@@ -192,7 +204,18 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .proof-link { font-size: 14px; font-weight: 700; color: var(--red); text-decoration: none; }
   .proof-link:hover { text-decoration: underline; text-underline-offset: 3px; }
   .proof-link.muted { color: var(--muted); font-weight: 500; font-family: var(--mono); font-size: 12px; }
-  .tools { margin-top: 24px; display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap; font-size: 15px; }
+  .skill-extra { margin-top: 28px; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 64px); }
+  .core { display: grid; gap: 12px; align-content: start; }
+  .tools { margin: 0; display: grid; gap: 12px; }
+  .tools div { display: grid; grid-template-columns: 9.5rem 1fr; gap: 12px; align-items: baseline; padding-bottom: 12px; border-bottom: 1px solid var(--rule); }
+  .tools dd { margin: 0; font-size: 15px; }
+  @media (max-width: 860px) { .skill-extra { grid-template-columns: 1fr; } }
+  @media (max-width: 480px) { .tools div { grid-template-columns: 1fr; gap: 4px; } }
+  .exp-hl { margin: 6px 0 0; padding-left: 1.1em; display: grid; gap: 6px; font-size: 15px; max-width: 62ch; }
+  .exp-hl li::marker { color: var(--red); }
+  .exp-foot { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: baseline; }
+  .exp-foot a { font-size: 14px; font-weight: 700; color: var(--red); text-decoration: none; }
+  .exp-foot a:hover { text-decoration: underline; text-underline-offset: 3px; }
   @media (max-width: 960px) {
     .skill-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .skill:nth-child(3) { padding-left: 0; border-left: 0; }

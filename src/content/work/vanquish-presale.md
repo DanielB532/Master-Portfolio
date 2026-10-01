@@ -1,8 +1,8 @@
 ---
 title: Selling out a $1,000 course in two days
-order: 3
+order: 4
 client: Vanquish Holdings
-period: Pre-sale launch
+period: 2022–2023
 tags: [B2C pre-sale, Omni-channel funnel]
 skillsShown: [Marketing automation, Behavioural segmentation, Personalisation, A/B testing, Launch strategy]
 summary: An omni-channel pre-sale for a $1,000 trading course, from social content to personalised email flows, that sold every seat in two days.

@@ -34,10 +34,14 @@ const work = defineCollection({
       .array(z.object({ job: z.string(), label: z.string(), points: z.array(z.string()) }))
       .optional(),
     phasesCaption: z.string().optional(),
+    phasesTitle: z.string().optional(),      // defaults to "The funnel" 
     // Extra evidence images shown under the results
     gallery: z
-      .array(z.object({ image: z.string(), alt: z.string(), caption: z.string() }))
-      .optional(),      // e.g. "Event 28 Sep"
+      .array(z.object({ image: z.string(), alt: z.string(), caption: z.string(), full: z.string().optional() }))
+      .optional(),
+    // When set, the gallery gets its own section (for work samples) instead of sitting under the results
+    galleryTitle: z.string().optional(),
+    galleryCaption: z.string().optional(),      // e.g. "Event 28 Sep"
     results: z.object({
       caption: z.string(),
       items: z.array(z.object({ value: z.string(), label: z.string() })),
