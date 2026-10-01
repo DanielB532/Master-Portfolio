@@ -10,7 +10,7 @@ headlineStat: { value: "1,470", label: clicks }
 facts:
   - { label: Audience, value: "About 9,300 senior retail and consumer-brand leaders" }
   - { label: Data, value: "Verified contacts sourced through Zimplify" }
-  - { label: My role, value: "Copy, journey design, build, sending and analysis" }
+  - { label: My role, value: "Copy strategy and editing (AI-assisted drafts), journey design, build, sending and analysis" }
 timelineEnd: Event 28 Sep
 sends:
   - job: Problem

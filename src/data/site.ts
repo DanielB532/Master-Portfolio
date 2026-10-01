@@ -7,7 +7,6 @@ export const site = {
   role: 'Email Marketing Co-ordinator',
   company: 'Hyve Group',
   location: 'London, UK',
-  status: 'Open to conversations',
   intro:
     'I’m an email marketer with 5+ years across email, CRM, copywriting and campaign execution, for 20+ B2B and B2C brands in the UK and US. At Hyve Group I run campaigns for global event brands like Shoptalk, and I build AI tools that take the manual work out of the process.',
   stats: [
@@ -46,7 +45,10 @@ export const skills = [
 ];
 
 // AI tools and workflows. status: shown as a pill.
-export const aiBuilds = [
+export const aiBuilds: {
+  name: string; where: string; status: string; built: string; problem: string; solution: string;
+  link?: { label: string; href: string };
+}[] = [
   {
     name: 'UTM Tagging Assistant',
     where: 'Hyve Group',
@@ -54,6 +56,23 @@ export const aiBuilds = [
     built: 'Custom GPT (ChatGPT)',
     problem: 'Every campaign link needs consistent UTM tags before it goes into HubSpot, and doing it by hand invites typos that break reporting.',
     solution: 'An assistant that creates, validates and formats UTM-tagged links for Hyve email campaigns, ready to paste straight into HubSpot.',
+    link: { label: 'Watch the demo on LinkedIn', href: 'https://lnkd.in/p/e6pUZh2U' },
+  },
+  {
+    name: 'Email performance analyst',
+    where: 'Hyve Group',
+    status: 'In use',
+    built: 'AI agent', // TODO: confirm what it was built with
+    problem: 'Campaign stats sat in reports that took time to turn into something the team could act on.',
+    solution: 'An agent that turns email stats into a ready-made PowerPoint and highlights where our emails can improve, which has helped the team spot and fix weak points.',
+  },
+  {
+    name: 'Fintech Meetup email enhancer',
+    where: 'Hyve Group',
+    status: 'In use',
+    built: 'Custom GPT (ChatGPT)',
+    problem: 'Event emails need accurate, specific details, and checking every draft against the event information is slow.',
+    solution: 'A GPT loaded with all of Fintech Meetup\u2019s event details that takes a drafted email and strengthens it with the right facts, angles and proof points.',
   },
   {
     name: 'Email briefing & QA assistant',
@@ -61,7 +80,7 @@ export const aiBuilds = [
     status: 'In development',
     built: 'Claude',
     problem: 'Email requests arrive through a long form, approvals are slow, and it is hard to see when an email has actually gone out.',
-    solution: 'A conversational intake tool that structures each request, speeds up sign-off and tracks send status, built from a spec I wrote with the team’s pain points.',
+    solution: 'A conversational intake tool that structures each request, speeds up sign-off and tracks send status, built from a spec I wrote with the team\u2019s pain points.',
   },
   {
     name: 'Personalised outreach pipeline',
