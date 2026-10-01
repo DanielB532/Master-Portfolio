@@ -12,11 +12,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
     <div class="wrap">
       <dl class="envelope">
         <dt>From</dt><dd>{site.firstName} {site.lastName}</dd>
-        <dt>Now</dt><dd>{site.role}, {site.company}</dd>
+        <dt>Focus</dt><dd>{site.focus}</dd>
         <dt>Based</dt><dd>{site.location}</dd>
         <dt>Status</dt><dd class="status"><span class="dot" aria-hidden="true"></span>{site.status}</dd>
       </dl>
-      <h1>{site.title}. I turn cold lists into <span class="hl">warm intent.</span></h1>
+      <h1>{site.role} at <span class="hl">{site.company}</span></h1>
       <p class="lede">{site.intro}</p>
       <dl class="hero-stats">
         {site.stats.map((st) => (<div><dt class="big-num">{st.value}</dt><dd>{st.label}</dd></div>))}
@@ -152,7 +152,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   }
   .envelope dt { color: var(--muted); }
   .envelope dd { margin: 0; min-width: 0; }
-  h1 { font-size: clamp(42px, 7.4vw, 92px); font-weight: 800; margin-top: 36px; max-width: 14ch; }
+  h1 { font-size: clamp(40px, 6.6vw, 84px); font-weight: 800; margin-top: 36px; max-width: 16ch; }
   .hl { color: var(--red); }
   .lede { margin-top: 28px; font-size: clamp(18px, 2vw, 20px); color: var(--muted); max-width: 56ch; }
   .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }

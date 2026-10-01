@@ -2,7 +2,8 @@
 export const site = {
   firstName: 'Daniel',
   lastName: 'Boadu',
-  title: 'Email & CRM Marketer',
+  title: 'Email Marketing Co-ordinator at Hyve Group',
+  focus: 'Email, CRM, automation & AI',
   role: 'Email Marketing Co-ordinator',
   company: 'Hyve Group',
   location: 'London, UK',
