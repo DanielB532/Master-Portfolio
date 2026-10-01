@@ -48,7 +48,7 @@ proof:
   image: /work/layton/revenue.jpg
   alt: "Net revenue chart showing $30,409 over January and February, with a spike to about $8,500 around 13 January"
   caption: Net revenue, first two months after launch
-  text: The launch alone brought in $30,409 in two months, with the biggest day right after the early-bird countdown ended. Retention emails and later offers took the total past $50,000.
+  text: The launch alone brought in $30,409 in two months, with the biggest single day at launch. Retention emails and later offers took the total past $50,000.
 gallery:
   - image: /work/layton/videos.jpg
     alt: "Grid of six short-form videos with view counts between 10.4K and 38.3K"
