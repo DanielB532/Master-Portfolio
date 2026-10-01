@@ -1,13 +1,16 @@
 ---
-// Same treatment as the MTP wordmark: first word in the section's text colour, second word in red.
+// Same treatment as the MTP wordmark: first name in the section's text colour, surname in red,
+// with the 'Fed-Ex' nickname in between.
 import { site } from '../data/site';
 interface Props { small?: boolean; }
 const { small = false } = Astro.props;
 ---
-<span class:list={['wm', { small }]}>{site.firstName.toUpperCase()} <span class="r">{site.lastName.toUpperCase()}</span></span>
+<span class:list={['wm', { small }]} title={`‘Fed-Ex’, because I always deliver`}>{site.firstName.toUpperCase()} <span class="nick">{site.nickname}</span> <span class="r">{site.lastName.toUpperCase()}</span></span>
 
 <style>
   .wm { font-weight: 800; font-size: 17px; letter-spacing: 0.06em; white-space: nowrap; }
   .wm.small { font-size: 14px; }
+  .nick { color: var(--grey-light); font-weight: 700; }
   .r { color: var(--red); }
+  @media (max-width: 420px) { .wm:not(.small) { font-size: 15px; letter-spacing: 0.04em; } }
 </style>
