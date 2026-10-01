@@ -82,6 +82,15 @@ export const aiBuilds: {
     solution: 'A GPT loaded with all of Fintech Meetup\u2019s event details that takes a drafted email and strengthens it with the right facts, angles and proof points.',
   },
   {
+    name: 'HTML email troubleshooting',
+    where: 'Hyve Group',
+    status: 'Done',
+    built: 'AI-assisted debugging',
+    problem: 'Sponsor-supplied HTML broke two Groceryshop emails, one on mobile and one spilling off the page, days before send.',
+    solution: 'Used AI to find what was breaking each layout, fixed the code myself and re-tested, then caught a copy error in the same QA pass.',
+    link: { label: 'See the before and after', href: '/work/html-email-fixes/' },
+  },
+  {
     name: 'Email briefing & QA assistant',
     where: 'Hyve Group',
     status: 'In development',

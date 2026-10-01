@@ -41,11 +41,14 @@ const work = defineCollection({
       .optional(),
     // When set, the gallery gets its own section (for work samples) instead of sitting under the results
     galleryTitle: z.string().optional(),
-    galleryCaption: z.string().optional(),      // e.g. "Event 28 Sep"
-    results: z.object({
-      caption: z.string(),
-      items: z.array(z.object({ value: z.string(), label: z.string() })),
-    }),
+    galleryCaption: z.string().optional(),
+    galleryCols: z.number().optional(),      // columns for the samples grid on desktop (default 4)      // e.g. "Event 28 Sep"
+    results: z
+      .object({
+        caption: z.string(),
+        items: z.array(z.object({ value: z.string(), label: z.string() })),
+      })
+      .optional(),
     proof: z
       .object({
         image: z.string(),

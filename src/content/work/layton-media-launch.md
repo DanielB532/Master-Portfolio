@@ -1,6 +1,6 @@
 ---
 title: Turning a bare email list into a $50K course launch
-order: 3
+order: 4
 client: Layton Media
 period: 2022–2023
 tags: [B2C course launch, Full-funnel email, Freelance]

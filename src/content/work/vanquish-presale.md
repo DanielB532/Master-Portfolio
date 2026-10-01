@@ -1,6 +1,6 @@
 ---
 title: Selling out a $1,000 course in two days
-order: 4
+order: 5
 client: Vanquish Holdings
 period: 2022–2023
 tags: [B2C pre-sale, Omni-channel funnel]

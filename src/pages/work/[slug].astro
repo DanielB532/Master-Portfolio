@@ -68,7 +68,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     <section class="section off">
       <div class="wrap">
         <div class="sec-head"><h2>{d.phasesTitle ?? 'The funnel'}</h2><span class="eyebrow">{d.phasesCaption ?? `${d.phases.length} stages`}</span></div>
-        <div class="phases">
+        <div class="phases" style={`--pcols:${Math.min(d.phases.length, 4)}`}>
           {d.phases.map((ph, i) => (
             <article class="phase">
               <header>
@@ -87,7 +87,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     <section id="samples" class="section light">
       <div class="wrap">
         <div class="sec-head"><h2>{d.galleryTitle}</h2><span class="eyebrow">{d.galleryCaption ?? `${d.gallery.length} examples`}</span></div>
-        <div class="samples">
+        <div class="samples" style={d.galleryCols ? `--gcols:${d.galleryCols}` : undefined}>
           {d.gallery.map((g) => (
             <figure>
               <a href={g.full ?? g.image} target="_blank" rel="noopener" aria-label={`Open full email: ${g.caption}`}>
@@ -102,6 +102,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     </section>
   )}
 
+  {d.results && (
   <section id="results" class="section dark">
     <div class="wrap">
       <div class="sec-head"><h2>Results</h2><span class="eyebrow">{d.results.caption}</span></div>
@@ -129,6 +130,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
       )}
     </div>
   </section>
+  )}
 
   {d.next && (
     <section class="section light">
@@ -192,7 +194,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .send footer b { font-size: 21px; }
   .send footer .eyebrow { font-size: 10.5px; }
 
-  .phases { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+  .phases { display: grid; grid-template-columns: repeat(var(--pcols, 4), minmax(0, 1fr)); gap: 20px; }
   .phase { background: var(--white); border: 1px solid var(--rule); min-width: 0; display: flex; flex-direction: column; }
   .phase header { padding: 18px 20px 14px; border-bottom: 1px solid var(--rule); display: grid; gap: 8px; }
   .phase h3 { font-size: 24px; font-weight: 800; letter-spacing: -0.02em; }
@@ -201,7 +203,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .gallery { margin-top: 36px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 20px; align-items: start; }
   .gallery figure { margin: 0; background: var(--card); border: 1px solid var(--rule); padding: 14px; max-width: 520px; }
   .gallery figcaption { margin-top: 12px; }
-  .samples { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+  .samples { display: grid; grid-template-columns: repeat(var(--gcols, 4), minmax(0, 1fr)); gap: 20px; }
   .samples figure { margin: 0; display: grid; gap: 10px; align-content: start; }
   .samples a { display: block; border: 1px solid var(--rule); overflow: hidden; background: var(--white); transition: border-color .15s, transform .15s; }
   .samples a:hover { border-color: var(--black); transform: translateY(-2px); }
