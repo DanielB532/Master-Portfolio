@@ -64,6 +64,25 @@ const pad = (n: number) => String(n).padStart(2, '0');
     </section>
   )}
 
+  {d.phases && (
+    <section class="section off">
+      <div class="wrap">
+        <div class="sec-head"><h2>The funnel</h2><span class="eyebrow">{d.phasesCaption ?? `${d.phases.length} stages`}</span></div>
+        <div class="phases">
+          {d.phases.map((ph, i) => (
+            <article class="phase">
+              <header>
+                <span class="eyebrow red">{pad(i + 1)} · {ph.label}</span>
+                <h3>{ph.job}</h3>
+              </header>
+              <ul>{ph.points.map((pt) => <li>{pt}</li>)}</ul>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
   <section id="results" class="section dark">
     <div class="wrap">
       <div class="sec-head"><h2>Results</h2><span class="eyebrow">{d.results.caption}</span></div>
@@ -77,6 +96,16 @@ const pad = (n: number) => String(n).padStart(2, '0');
             <figcaption class="eyebrow">{d.proof.caption}</figcaption>
           </figure>
           <p>{d.proof.text}</p>
+        </div>
+      )}
+      {d.gallery && (
+        <div class="gallery">
+          {d.gallery.map((g) => (
+            <figure>
+              <img src={g.image} alt={g.alt} loading="lazy" />
+              <figcaption class="eyebrow">{g.caption}</figcaption>
+            </figure>
+          ))}
         </div>
       )}
     </div>
@@ -121,6 +150,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .prose { max-width: 760px; display: grid; gap: 18px; }
   .prose :global(h2) { font-size: clamp(24px, 3vw, 32px); font-weight: 800; margin-top: 18px; }
   .prose :global(h2:first-child) { margin-top: 0; }
+  .prose :global(ul) { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; font-size: 18px; max-width: 62ch; }
+  .prose :global(li::marker) { color: var(--red); }
+  .prose :global(strong) { font-weight: 700; }
   .prose :global(p) { font-size: 19px; line-height: 1.65; max-width: 62ch; }
 
   .axis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto; gap: 20px; font-family: var(--mono); font-size: 13px; color: var(--muted); padding-bottom: 14px; border-bottom: 2px solid var(--black); }
@@ -141,10 +173,19 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .send footer b { font-size: 21px; }
   .send footer .eyebrow { font-size: 10.5px; }
 
+  .phases { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+  .phase { background: var(--white); border: 1px solid var(--rule); min-width: 0; display: flex; flex-direction: column; }
+  .phase header { padding: 18px 20px 14px; border-bottom: 1px solid var(--rule); display: grid; gap: 8px; }
+  .phase h3 { font-size: 24px; font-weight: 800; letter-spacing: -0.02em; }
+  .phase ul { margin: 0; padding: 18px 20px 20px 36px; display: grid; gap: 10px; font-size: 15px; line-height: 1.5; }
+  .phase li::marker { color: var(--red); }
+  .gallery { margin-top: 36px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 20px; align-items: start; }
+  .gallery figure { margin: 0; background: var(--card); border: 1px solid var(--rule); padding: 14px; max-width: 520px; }
+  .gallery figcaption { margin-top: 12px; }
   .results { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
   .result { padding: 28px 20px 28px 0; display: grid; gap: 10px; align-content: start; }
   .result + .result { padding-left: 20px; border-left: 1px solid var(--rule); }
-  .result b { font-size: clamp(40px, 5vw, 60px); }
+  .result b { font-size: clamp(36px, 4.6vw, 56px); white-space: nowrap; }
   .result:first-child b { color: var(--red-bright); }
   .result p { color: var(--muted); font-size: 15px; }
   .proof { margin-top: 36px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 64px); align-items: center; }
@@ -164,6 +205,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .nl-title { font-size: clamp(22px, 3vw, 32px); font-weight: 800; letter-spacing: -0.02em; }
   .next-link:hover .nl-title { color: var(--red); }
 
+  @media (max-width: 1080px) { .phases { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 600px) { .phases { grid-template-columns: 1fr; } }
   @media (max-width: 900px) {
     .hero-grid, .proof, .next { grid-template-columns: 1fr; }
     .sends { grid-template-columns: 1fr; }

@@ -28,7 +28,16 @@ const work = defineCollection({
         }),
       )
       .optional(),
-    timelineEnd: z.string().optional(),      // e.g. "Event 28 Sep"
+    timelineEnd: z.string().optional(),
+    // Funnel or programme stages, for campaigns that aren't a fixed email sequence
+    phases: z
+      .array(z.object({ job: z.string(), label: z.string(), points: z.array(z.string()) }))
+      .optional(),
+    phasesCaption: z.string().optional(),
+    // Extra evidence images shown under the results
+    gallery: z
+      .array(z.object({ image: z.string(), alt: z.string(), caption: z.string() }))
+      .optional(),      // e.g. "Event 28 Sep"
     results: z.object({
       caption: z.string(),
       items: z.array(z.object({ value: z.string(), label: z.string() })),
