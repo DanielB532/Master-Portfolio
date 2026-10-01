@@ -53,45 +53,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
     </div>
   </section>
 
-  <!-- Work index -->
-  <section id="work" class="section off">
-    <div class="wrap">
-      <div class="sec-head"><h2>Selected work</h2><span class="eyebrow">{pad(work.length)} case {work.length === 1 ? 'study' : 'studies'}</span></div>
-      <ol class="index">
-        {work.map((p, i) => (
-          <li>
-            <a href={`/work/${p.id}/`}>
-              <span class="num">{pad(i + 1)}</span>
-              <div class="txt">
-                <h3>{p.data.title}</h3>
-                <p class="meta">{p.data.client} · {p.data.tags.slice(0, 2).join(' · ')}</p>
-              </div>
-              <span class="stat"><b class="big-num">{p.data.headlineStat.value}</b>{p.data.headlineStat.label}</span>
-              <span class="arrow" aria-hidden="true">→</span>
-            </a>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <!-- Writing -->
-  <section id="writing" class="section light">
-    <div class="wrap">
-      <div class="sec-head"><h2>Writing</h2><span class="eyebrow">Long-form articles</span></div>
-      <div class="writing-grid">
-        {writing.map((w) => (
-          <a class="article" href={`/writing/${w.id}/`}>
-            <span class="eyebrow red">{w.data.topic} · {w.data.date}</span>
-            <h3>{w.data.short}</h3>
-            <p>{w.data.summary}</p>
-            <span class="read">Read the article →</span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
   <!-- AI -->
   <section id="ai" class="section dark">
     <div class="wrap">
@@ -120,6 +81,28 @@ const pad = (n: number) => String(n).padStart(2, '0');
           </article>
         ))}
       </div>
+    </div>
+  </section>
+
+  <!-- Work index -->
+  <section id="work" class="section off">
+    <div class="wrap">
+      <div class="sec-head"><h2>Selected work</h2><span class="eyebrow">{pad(work.length)} case {work.length === 1 ? 'study' : 'studies'}</span></div>
+      <ol class="index">
+        {work.map((p, i) => (
+          <li>
+            <a href={`/work/${p.id}/`}>
+              <span class="num">{pad(i + 1)}</span>
+              <div class="txt">
+                <h3>{p.data.title}</h3>
+                <p class="meta">{p.data.client} · {p.data.tags.slice(0, 2).join(' · ')}</p>
+              </div>
+              <span class="stat"><b class="big-num">{p.data.headlineStat.value}</b>{p.data.headlineStat.label}</span>
+              <span class="arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ol>
     </div>
   </section>
 
@@ -160,6 +143,23 @@ const pad = (n: number) => String(n).padStart(2, '0');
         <blockquote>“{recommendation.quote}”</blockquote>
         <figcaption><b>{recommendation.name}</b><span class="eyebrow">{recommendation.context}</span></figcaption>
       </figure>
+    </div>
+  </section>
+
+  <!-- Writing -->
+  <section id="writing" class="section light">
+    <div class="wrap">
+      <div class="sec-head"><h2>Writing</h2><span class="eyebrow">Earlier long-form articles</span></div>
+      <div class="writing-grid">
+        {writing.map((w) => (
+          <a class="article" href={`/writing/${w.id}/`}>
+            <span class="eyebrow red">{w.data.topic} · {w.data.date}</span>
+            <h3>{w.data.short}</h3>
+            <p>{w.data.summary}</p>
+            <span class="read">Read the article →</span>
+          </a>
+        ))}
+      </div>
     </div>
   </section>
 

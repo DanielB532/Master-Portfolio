@@ -1,6 +1,6 @@
 ---
 title: Fixing broken HTML emails with AI
-order: 2
+order: 5
 client: Hyve Group · Groceryshop 2026
 period: Sep 2026
 tags: [HTML troubleshooting, Email QA]
