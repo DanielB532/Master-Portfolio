@@ -57,7 +57,8 @@ const base = isHome ? '' : '/';
 <style>
   .nav { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid var(--rule); padding-top: env(safe-area-inset-top, 0px); }
   .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 16px; }
-  .home { text-decoration: none; }
+  .home { text-decoration: none; min-width: 0; }
+  nav { flex-shrink: 0; }
   nav { display: flex; gap: clamp(14px, 3vw, 28px); }
   nav a { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: var(--grey-light); }
   nav a:hover { color: var(--white); }

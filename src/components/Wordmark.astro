@@ -1,16 +1,23 @@
 ---
-// Same treatment as the MTP wordmark: first name in the section's text colour, surname in red,
-// with the 'Fed-Ex' nickname in between.
+// Same treatment as the MTP wordmark: first name in the section's text colour, surname in red.
+// The header version adds the 'Fed-Ex' line after the name, in the mono face.
 import { site } from '../data/site';
 interface Props { small?: boolean; }
 const { small = false } = Astro.props;
 ---
-<span class:list={['wm', { small }]} title={`‘Fed-Ex’, because I always deliver`}>{site.firstName.toUpperCase()} <span class="nick">{site.nickname}</span> <span class="r">{site.lastName.toUpperCase()}</span></span>
+<span class:list={['wm', { small }]}>
+  <span class="name">{site.firstName.toUpperCase()} <span class="r">{site.lastName.toUpperCase()}</span></span>
+  {!small && <span class="aka">{site.aka}</span>}
+</span>
 
 <style>
-  .wm { font-weight: 800; font-size: 17px; letter-spacing: 0.06em; white-space: nowrap; }
-  .wm.small { font-size: 14px; }
-  .nick { color: var(--grey-light); font-weight: 700; }
+  .wm { display: inline-flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+  .name { font-weight: 800; font-size: 17px; letter-spacing: 0.06em; white-space: nowrap; }
+  .wm.small .name { font-size: 14px; }
   .r { color: var(--red); }
-  @media (max-width: 420px) { .wm:not(.small) { font-size: 15px; letter-spacing: 0.04em; } }
+  .aka { font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--grey-light); letter-spacing: 0; white-space: nowrap; }
+  @media (max-width: 760px) {
+    .wm { flex-direction: column; gap: 2px; }
+    .aka { font-size: 11.5px; white-space: normal; }
+  }
 </style>

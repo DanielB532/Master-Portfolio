@@ -4,7 +4,7 @@ export const site = {
   lastName: 'Boadu',
   title: 'Email Marketing Co-ordinator at Hyve Group',
   focus: 'Email, CRM, automation & AI',
-  nickname: '\u2018FED-EX\u2019',
+  aka: 'aka \u2018Fed-Ex\u2019, because I always deliver',
   role: 'Email Marketing Co-ordinator',
   company: 'Hyve Group',
   location: 'London, UK',
