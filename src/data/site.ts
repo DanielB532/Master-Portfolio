@@ -149,7 +149,12 @@ export const experience: {
     role: 'Senior Copywriter',
     type: 'Full-time · Remote',
     period: 'Nov 2023 – Feb 2024',
-    text: 'Copy for a global trading brand, including A/B tested email content.',
+    text: 'Copy for a global trading brand, turning complex, heavily regulated financial offers into clear, persuasive landing pages and emails.',
+    highlights: [
+      'Wrote welcome bonus landing pages for OANDA\u2019s affiliate partners, explaining a tiered offer of up to $10,000 in three simple steps.',
+      'Wrote landing page copy for the OANDA x New York Red Bulls partnership.',
+      'Wrote follow-up emails for webinar attendees, including a $300 new account bonus offer, alongside A/B tested email content.',
+    ],
   },
   {
     company: 'Social Revelation Marketing',
@@ -163,6 +168,7 @@ export const experience: {
       'Built an automated welcome sequence in Kajabi that improved retention by 10% and cut inactive contacts by 8%.',
       'Raised primary inbox placement by 25% by improving engagement signals and list quality.',
       'Contributed to 10% revenue growth by balancing value-led sequences with offer-led pushes.',
+      'Wrote the agency\u2019s own Instagram content, turning stats and short stories into posts that drove followers to the link in bio.',
     ],
     tools: ['Kajabi', 'AWeber', 'GoHighLevel'],
   },

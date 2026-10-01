@@ -62,4 +62,18 @@ const work = defineCollection({
   }),
 });
 
-export const collections = { work };
+// Long-form articles, one Markdown file each in src/content/writing/.
+const writing = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/writing' }),
+  schema: z.object({
+    title: z.string(),
+    short: z.string(),          // short title for the homepage list
+    topic: z.string(),
+    date: z.coerce.string(),
+    order: z.number(),
+    summary: z.string(),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { work, writing };
