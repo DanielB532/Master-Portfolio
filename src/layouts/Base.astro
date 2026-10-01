@@ -1,0 +1,66 @@
+---
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/700.css';
+import '@fontsource/inter/800.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '../styles/global.css';
+import Wordmark from '../components/Wordmark.astro';
+import { site } from '../data/site';
+
+interface Props { title?: string; description?: string; }
+const fullName = `${site.firstName} ${site.lastName}`;
+const { title = `${fullName} | ${site.role}`, description = site.intro } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const isHome = Astro.url.pathname === '/';
+const base = isHome ? '' : '/';
+---
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="theme-color" content="#0B0B0C" />
+  </head>
+  <body>
+    <header class="nav dark">
+      <div class="wrap nav-inner">
+        <a href="/" class="home" aria-label={`${fullName}, home`}><Wordmark /></a>
+        <nav aria-label="Main">
+          <a href={`${base}#work`}>Work</a>
+          <a href={`${base}#experience`}>Experience</a>
+          <a href={`${base}#contact`}>Contact</a>
+        </nav>
+      </div>
+    </header>
+    <main><slot /></main>
+    <footer class="foot dark">
+      <div class="wrap foot-inner">
+        <Wordmark small />
+        <span class="eyebrow">© {new Date().getFullYear()} {fullName} · {site.location}</span>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .nav { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid var(--rule); padding-top: env(safe-area-inset-top, 0px); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 16px; }
+  .home { text-decoration: none; }
+  nav { display: flex; gap: clamp(14px, 3vw, 28px); }
+  nav a { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: var(--grey-light); }
+  nav a:hover { color: var(--white); }
+  .foot { border-top: 1px solid var(--rule); }
+  .foot-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; padding-block: 28px calc(28px + env(safe-area-inset-bottom, 0px)); }
+  @media (max-width: 520px) { nav a:nth-child(2) { display: none; } }
+</style>

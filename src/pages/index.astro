@@ -1,0 +1,130 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { site, experience } from '../data/site';
+
+const work = (await getCollection('work', ({ data }) => !data.draft)).sort((a, b) => a.data.order - b.data.order);
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<Base>
+  <!-- Hero: styled like an email header -->
+  <section class="hero dark">
+    <div class="wrap">
+      <dl class="envelope">
+        <dt>From</dt><dd>{site.firstName} {site.lastName}</dd>
+        <dt>Role</dt><dd>{site.role}, {site.company}</dd>
+        <dt>Based</dt><dd>{site.location}</dd>
+      </dl>
+      <h1>{site.headline.replace('warm intent.', '')}<span class="hl">warm intent.</span></h1>
+      <p class="lede">{site.intro}</p>
+      <div class="actions">
+        <a class="btn red" href="#work">See the work</a>
+        <a class="btn ghost" href="#contact">Get in touch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Work index -->
+  <section id="work" class="section light">
+    <div class="wrap">
+      <div class="sec-head"><h2>Selected work</h2><span class="eyebrow">{pad(work.length)} case {work.length === 1 ? 'study' : 'studies'}</span></div>
+      <ol class="index">
+        {work.map((p, i) => (
+          <li>
+            <a href={`/work/${p.id}/`}>
+              <span class="num">{pad(i + 1)}</span>
+              <div class="txt">
+                <h3>{p.data.title}</h3>
+                <p class="meta">{p.data.client} · {p.data.tags.slice(0, 2).join(' · ')}</p>
+              </div>
+              <span class="stat"><b class="big-num">{p.data.headlineStat.value}</b>{p.data.headlineStat.label}</span>
+              <span class="arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section id="experience" class="section dark">
+    <div class="wrap">
+      <div class="sec-head"><h2>Experience</h2><span class="eyebrow">{site.location}</span></div>
+      <div class="exp-grid">
+        <p class="statement">I care about the send after the send: what someone did last tells you what to say next.</p>
+        <div>
+          <ul class="exp">
+            {experience.map((e) => (
+              <li>
+                <div class="exp-top"><h3>{e.company}</h3>{e.period && <span class="eyebrow">{e.period}</span>}</div>
+                <p class="eyebrow red">{e.role}</p>
+                <p class="exp-text">{e.text}</p>
+              </li>
+            ))}
+          </ul>
+          <div class="tags skills">{site.skills.map((s) => <span class="tag">{s}</span>)}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="section light">
+    <div class="wrap">
+      <div class="sec-head"><h2>Contact</h2><span class="eyebrow">Open to conversations</span></div>
+      <p class="contact-line">Want to talk about email, CRM or a project?</p>
+      <div class="actions">
+        <a class="btn red" href={site.linkedin} target="_blank" rel="noopener">Message me on LinkedIn</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { padding-block: clamp(56px, 10vw, 120px) clamp(64px, 10vw, 120px); }
+  .envelope {
+    display: grid; grid-template-columns: auto 1fr; column-gap: 24px; row-gap: 6px;
+    font-family: var(--mono); font-size: 14px; margin: 0; max-width: 620px;
+    padding-bottom: 22px; border-bottom: 1px solid var(--rule);
+  }
+  .envelope dt { color: var(--muted); }
+  .envelope dd { margin: 0; min-width: 0; }
+  h1 { font-size: clamp(42px, 7.4vw, 92px); font-weight: 800; margin-top: 36px; max-width: 14ch; }
+  .hl { color: var(--red); }
+  .lede { margin-top: 28px; font-size: clamp(18px, 2vw, 20px); color: var(--muted); max-width: 56ch; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+
+  .index { list-style: none; margin: 0; padding: 0; }
+  .index a {
+    display: grid; grid-template-columns: 3rem minmax(0, 1fr) auto 2rem; gap: 24px; align-items: center;
+    padding-block: 28px; border-bottom: 1px solid var(--rule); text-decoration: none;
+  }
+  .index li:first-child a { border-top: 1px solid var(--rule); }
+  .num { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+  .index h3 { font-size: clamp(24px, 3.4vw, 36px); font-weight: 800; }
+  .meta { margin-top: 8px; color: var(--muted); font-size: 15px; }
+  .stat { font-family: var(--mono); font-size: 13px; color: var(--muted); text-align: right; }
+  .stat b { display: block; font-family: var(--sans); font-size: 30px; color: var(--black); }
+  .arrow { font-size: 24px; color: var(--red); transition: transform .2s; }
+  .index a:hover .arrow { transform: translateX(6px); }
+  .index a:hover h3 { color: var(--red); }
+
+  .exp-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: clamp(28px, 6vw, 80px); }
+  .statement { font-size: clamp(26px, 3.4vw, 38px); font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; }
+  .exp { list-style: none; margin: 0; padding: 0; }
+  .exp li { padding-block: 22px; border-bottom: 1px solid var(--rule); display: grid; gap: 6px; }
+  .exp li:first-child { border-top: 1px solid var(--rule); }
+  .exp-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .exp h3 { font-size: 22px; font-weight: 800; letter-spacing: -0.01em; }
+  .exp-text { color: var(--muted); max-width: 58ch; }
+  .skills { margin-top: 28px; }
+
+  .contact-line { font-size: clamp(32px, 5vw, 60px); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; max-width: 18ch; text-wrap: balance; }
+
+  @media (max-width: 860px) { .exp-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 600px) {
+    .index a { grid-template-columns: minmax(0, 1fr) auto; gap: 12px 16px; }
+    .num, .arrow { display: none; }
+    .stat b { font-size: 24px; }
+  }
+</style>

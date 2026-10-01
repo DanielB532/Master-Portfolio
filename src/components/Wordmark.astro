@@ -1,0 +1,13 @@
+---
+// Same treatment as the MTP wordmark: first word in the section's text colour, second word in red.
+import { site } from '../data/site';
+interface Props { small?: boolean; }
+const { small = false } = Astro.props;
+---
+<span class:list={['wm', { small }]}>{site.firstName.toUpperCase()} <span class="r">{site.lastName.toUpperCase()}</span></span>
+
+<style>
+  .wm { font-weight: 800; font-size: 17px; letter-spacing: 0.06em; white-space: nowrap; }
+  .wm.small { font-size: 14px; }
+  .r { color: var(--red); }
+</style>
