@@ -3,7 +3,8 @@ title: Turning a cold list into warm intent
 order: 1
 client: Shoptalk Fall 2026
 period: Aug–Sep 2026
-tags: [B2B cold outbound, 3-email journey, Copywriting, Analysis]
+tags: [B2B cold outbound, 3-email journey]
+skillsShown: [Journey design, B2B copywriting, Performance analysis, Cold outbound]
 summary: A three-email cold outbound journey for Shoptalk Fall 2026, where each send had one job.
 headlineStat: { value: "1,470", label: clicks }
 facts:

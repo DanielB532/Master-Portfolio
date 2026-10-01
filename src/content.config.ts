@@ -11,6 +11,7 @@ const work = defineCollection({
     client: z.string(),
     period: z.string(),                      // e.g. "Aug–Sep 2026"
     tags: z.array(z.string()),
+    skillsShown: z.array(z.string()),          // shown to recruiters at the top of the case study
     summary: z.string(),                     // one line for the work list and social previews
     headlineStat: z.object({ value: z.string(), label: z.string() }),
     facts: z.array(z.object({ label: z.string(), value: z.string() })),
