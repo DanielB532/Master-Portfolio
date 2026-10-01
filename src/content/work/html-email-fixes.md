@@ -17,9 +17,9 @@ phases:
   - job: Mobile layout
     label: DemandTec email
     points:
-      - The custom HTML block didn't render properly on phones.
+      - A test send to my phone showed the header breaking. "GROCERYSHOP 2026" stacked letter by letter and the event name split mid-word.
       - I put the code through AI to find what was breaking the layout, then applied the fix.
-      - Re-tested in preview until it displayed properly on mobile.
+      - Re-tested until it displayed properly on mobile.
   - job: Overflow
     label: DemandTec email
     points:
@@ -33,9 +33,10 @@ phases:
       - Corrected it to "near Border Grill" before it went out.
       - A small fix, but a typo in a sponsor's email reflects on the event as well as the sponsor.
 galleryTitle: Before and after
-galleryCaption: Two emails, three fixes
-galleryCols: 2
+galleryCaption: Phone, desktop and copy
+galleryCols: 3
 gallery:
+  - { image: /work/html-fixes/before-mobile-thumb.jpg, full: /work/html-fixes/before-mobile.jpg, caption: "Before: on a phone, the header stacked letter by letter and 'Groceryshop' split mid-word", alt: "Phone test send of the DemandTec email where 'GROCERYSHOP 2026' wraps one or two letters per line and 'Groceryshop' breaks across two lines" }
   - { image: /work/html-fixes/before-overflow.png, caption: "Before: the custom HTML block spilling past the email's right-hand edge", alt: "Email editor preview where a DemandTec HTML block extends beyond the right edge of the email template" }
   - { image: /work/html-fixes/after-demandtec-thumb.jpg, full: /work/html-fixes/after-demandtec.jpg, caption: "After: the fixed DemandTec email, sitting inside the template", alt: "The corrected DemandTec Groceryshop 2026 email rendering properly within the template" }
   - { image: /work/html-fixes/before-typo.png, caption: "Before: \"newar Border Grill\"", alt: "Instacart email paragraph containing the typo 'newar Border Grill'" }
