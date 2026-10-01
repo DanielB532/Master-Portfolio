@@ -62,7 +62,8 @@ export const aiBuilds: {
     name: 'Email performance analyst',
     where: 'Hyve Group',
     status: 'In use',
-    built: 'AI agent', // TODO: confirm what it was built with
+    built: 'Custom agent (ChatGPT)',
+    // link: { label: 'See the post on LinkedIn', href: '' },  // add once the post is up
     problem: 'Campaign stats sat in reports that took time to turn into something the team could act on.',
     solution: 'An agent that turns email stats into a ready-made PowerPoint and highlights where our emails can improve, which has helped the team spot and fix weak points.',
   },
