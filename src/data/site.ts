@@ -18,7 +18,7 @@ export const site = {
   linkedin: 'https://www.linkedin.com/in/daniel-boadu-5394a0218/',
   // Put your CV at public/cv.pdf and set this to '/cv.pdf' to show the download button
   cv: '',
-  tools: ['HubSpot', 'Zimplify', 'Monday.com', 'ChatGPT', 'Claude', 'Claude Code'],
+  tools: ['HubSpot', 'ActiveCampaign', 'Mailchimp', 'GoHighLevel', 'Zimplify', 'Monday.com', 'Trello', 'ChatGPT', 'Claude', 'Claude Code'],
 };
 
 // What a recruiter should take away. Each skill points to evidence.
