@@ -9,7 +9,7 @@ export const site = {
   company: 'Hyve Group',
   location: 'London, UK',
   intro:
-    'I’m an email marketer with 5+ years across email, CRM, copywriting and campaign execution, for 20+ B2B and B2C brands in the UK and US. At Hyve Group I run campaigns for global event brands like Shoptalk, and I build AI tools that take the manual work out of the process.',
+    'I\u2019m an email marketer with 5+ years of running full campaigns across email, CRM and copywriting, for 20+ B2B and B2C brands in the UK and US. At Hyve Group I own the email execution process for global event brands like Shoptalk, and I use AI to streamline that process and get campaigns out faster.',
   stats: [
     { value: '5+', label: 'years in email marketing' },
     { value: '20+', label: 'B2B and B2C brands' },
@@ -117,7 +117,7 @@ export const experience: {
     role: 'Email Marketing Co-ordinator',
     type: 'Full-time · Hybrid',
     period: 'Mar 2026 – Present',
-    text: 'End-to-end email campaign execution across global event brands including Shoptalk and Groceryshop. Expanding into sequencing, segmentation and list building, and building AI tools for the team.',
+    text: 'I own the email execution process across global event brands including Shoptalk and Groceryshop, running full campaigns from brief to send. I use AI throughout to streamline the workflow and speed up delivery, and I\u2019m expanding into sequencing, segmentation and list building.',
     link: [{ label: 'Shoptalk case study', href: '/work/stf26-cold-outbound/' }],
   },
   {
