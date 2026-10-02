@@ -21,7 +21,7 @@ export const site = {
   cv: '',
   tools: [
     { group: 'Email & CRM', items: ['HubSpot', 'Marketo', 'ActiveCampaign', 'Mailchimp', 'GoHighLevel', 'Kajabi', 'AWeber', 'Swoogo'] },
-    { group: 'Data & prospecting', items: ['Apollo', 'Zimplify'] },
+    { group: 'Data & prospecting', items: ['Apollo', 'Zymplify'] },
     { group: 'Project management', items: ['Monday.com', 'Trello'] },
     { group: 'AI', items: ['ChatGPT', 'Claude', 'Claude Code'] },
   ],
