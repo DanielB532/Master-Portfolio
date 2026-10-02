@@ -9,6 +9,7 @@ const work = defineCollection({
     title: z.string(),
     order: z.number(),                       // position in the "Selected work" list (1 = top)
     client: z.string(),
+    industry: z.string(),                    // shown as a label in the work list, e.g. "Retail events"
     period: z.string(),                      // e.g. "Aug–Sep 2026"
     tags: z.array(z.string()),
     skillsShown: z.array(z.string()),          // shown to recruiters at the top of the case study

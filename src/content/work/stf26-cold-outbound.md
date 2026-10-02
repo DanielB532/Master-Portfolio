@@ -2,6 +2,7 @@
 title: Turning a cold list into warm intent
 order: 1
 client: Shoptalk Fall 2026
+industry: B2B retail events
 period: Aug–Sep 2026
 tags: [B2B cold outbound, 3-email journey]
 skillsShown: [Journey design, B2B copywriting, Performance analysis, Cold outbound]

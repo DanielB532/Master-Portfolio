@@ -2,6 +2,7 @@
 title: Award entry campaigns for 20+ Future plc brands
 order: 2
 client: Future plc
+industry: Publishing & awards
 period: Nov 2025 – Jan 2026
 tags: [B2B and B2C awards, Multi-brand email]
 skillsShown: [Tone of voice, Segmentation, Campaign planning, Prospect lists (Apollo), Conversion copywriting]

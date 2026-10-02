@@ -18,6 +18,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
       <a class="back eyebrow" href="/#work">← All work</a>
       <p class="eyebrow red kicker">Case study {pad(index + 1)} · {d.period}</p>
       <h1>{d.title}</h1>
+      <p class="cs-summary">{d.summary}</p>
       <div class="hero-grid">
         <div class="skills-shown">
           <p class="eyebrow">Skills shown</p>
@@ -159,6 +160,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .back:hover { color: var(--white); }
   .kicker { margin-bottom: 18px; }
   h1 { font-size: clamp(40px, 7vw, 88px); font-weight: 800; max-width: 15ch; }
+  .cs-summary { margin-top: 20px; font-size: clamp(18px, 2vw, 21px); color: var(--grey-light); max-width: 62ch; }
   .hero-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(28px, 6vw, 80px); margin-top: clamp(32px, 5vw, 56px); align-items: start; }
   .skills-shown { display: grid; gap: 12px; }
   .skills-shown .tag { color: var(--white); border-color: #3A3A40; font-size: 13px; }

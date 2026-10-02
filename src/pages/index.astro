@@ -60,8 +60,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
       <div class="ai-intro">
         <p class="statement">I use AI to take the repetitive work out of marketing, so more time goes on the strategy and the copy.</p>
         <div class="ai-lede">
-          <p>Every tool here started as a real problem in my day-to-day work. I scope it, write the instructions, test it against real campaigns and keep a human check on anything that gets sent.</p>
-          <p>I use AI in my copywriting too. It speeds up first drafts and variations, as it did on the <a href="/work/stf26-cold-outbound/">Shoptalk cold emails</a>, while the strategy, structure and final edit stay mine.</p>
+          <p>Every tool here started as a real problem in my day-to-day work. I use AI in my copywriting too: it speeds up first drafts, as it did on the <a href="/work/stf26-cold-outbound/">Shoptalk cold emails</a>, while the strategy and final edit stay mine.</p>
         </div>
       </div>
       <div class="ai-grid">
@@ -72,10 +71,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
               <span class:list={['pill', b.status.toLowerCase().replace(/\s+/g, '-')]}>{b.status}</span>
             </div>
             <h3>{b.name}</h3>
-            <dl class="ai-body">
-              <div><dt class="eyebrow">Problem</dt><dd>{b.problem}</dd></div>
-              <div><dt class="eyebrow">What I built</dt><dd>{b.solution}</dd></div>
-            </dl>
+            <p class="ai-body">{b.solution}</p>
             <p class="built"><span class="eyebrow">Built with</span> {b.built}</p>
             {b.link && <a class="ai-link" href={b.link.href} target="_blank" rel="noopener">{b.link.label} →</a>}
           </article>
@@ -95,7 +91,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
               <span class="num">{pad(i + 1)}</span>
               <div class="txt">
                 <h3>{p.data.title}</h3>
-                <p class="meta">{p.data.client} · {p.data.tags.slice(0, 2).join(' · ')}</p>
+                <p class="meta"><span class="industry">{p.data.industry}</span> {p.data.client} · {p.data.tags[0]}</p>
               </div>
               <span class="stat"><b class="big-num">{p.data.headlineStat.value}</b>{p.data.headlineStat.label}</span>
               <span class="arrow" aria-hidden="true">→</span>
@@ -119,7 +115,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
                 <div class="exp-top"><h3>{e.role}</h3>{e.period && <span class="eyebrow">{e.period}</span>}</div>
                 <p class="exp-co"><b>{e.company}</b> · {e.type}</p>
                 <p class="exp-text">{e.text}</p>
-                {e.highlights && <ul class="exp-hl">{e.highlights.map((h) => <li>{h}</li>)}</ul>}
+                {e.highlights && (
+                  <details class="exp-more">
+                    <summary>Key results</summary>
+                    <ul class="exp-hl">{e.highlights.map((h) => <li>{h}</li>)}</ul>
+                  </details>
+                )}
                 {(e.tools || e.link) && (
                   <div class="exp-foot">
                     {e.tools && <span class="eyebrow">Tools: {e.tools.join(' · ')}</span>}
@@ -150,16 +151,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
   <section id="writing" class="section light">
     <div class="wrap">
       <div class="sec-head"><h2>Writing</h2><span class="eyebrow">Earlier long-form articles</span></div>
-      <div class="writing-grid">
+      <ul class="writing-list">
         {writing.map((w) => (
-          <a class="article" href={`/writing/${w.id}/`}>
-            <span class="eyebrow red">{w.data.topic} · {w.data.date}</span>
-            <h3>{w.data.short}</h3>
-            <p>{w.data.summary}</p>
-            <span class="read">Read the article →</span>
-          </a>
+          <li><a href={`/writing/${w.id}/`}><span class="eyebrow">{w.data.topic} · {w.data.date}</span><span class="wt">{w.data.short}</span><span class="arrow" aria-hidden="true">→</span></a></li>
         ))}
-      </div>
+      </ul>
     </div>
   </section>
 
@@ -257,14 +253,14 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .ai-lede a { color: var(--white); text-decoration-color: var(--red); text-underline-offset: 3px; }
   .ai-link { font-size: 14px; font-weight: 700; color: var(--red-bright); text-decoration: none; }
   .ai-link:hover { text-decoration: underline; text-underline-offset: 3px; }
-  .ai-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
-  .ai-card { background: var(--card); border: 1px solid var(--rule); padding: clamp(20px, 3vw, 32px); display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .ai-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .ai-card { background: var(--card); border: 1px solid var(--rule); padding: 22px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
   .ai-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-  .ai-card h3 { font-size: clamp(24px, 2.6vw, 30px); font-weight: 800; }
-  .ai-body { margin: 0; display: grid; gap: 14px; flex: 1; align-content: start; }
+  .ai-card h3 { font-size: 21px; font-weight: 800; letter-spacing: -0.015em; line-height: 1.15; }
+  .ai-body { margin: 0; flex: 1; color: #D4D4D8; font-size: 15px; line-height: 1.5; }
   .ai-body div { display: grid; gap: 4px; }
   .ai-body dd { margin: 0; color: #D4D4D8; font-size: 15.5px; }
-  .built { font-size: 14px; padding-top: 14px; border-top: 1px solid var(--rule); display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; }
+  .built { font-size: 13px; padding-top: 12px; border-top: 1px solid var(--rule); display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; }
   .pill { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding: 4px 10px; border: 1px solid currentColor; white-space: nowrap; }
   .pill.in-use, .pill.live { color: #3FB950; }
   .pill.in-development { color: #E3B341; }
@@ -286,9 +282,25 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .article .read { font-size: 14px; font-weight: 700; color: var(--red); }
   .contact-email { margin-top: 18px; font-family: var(--mono); font-size: clamp(16px, 2vw, 20px); overflow-wrap: anywhere; }
   .contact-email a { color: inherit; text-decoration-color: var(--red); text-underline-offset: 4px; }
+  .exp-more { margin-top: 4px; }
+  .exp-more summary { cursor: pointer; font-size: 14px; font-weight: 700; color: var(--red); list-style: none; display: inline-flex; align-items: center; gap: 6px; }
+  .exp-more summary::-webkit-details-marker { display: none; }
+  .exp-more summary::after { content: '+'; font-family: var(--mono); font-size: 16px; }
+  .exp-more[open] summary::after { content: '\2212'; }
+  .exp-more[open] summary { margin-bottom: 6px; }
+  .industry { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--red); border: 1px solid currentColor; padding: 2px 7px; margin-right: 8px; white-space: nowrap; }
+  .writing-list { list-style: none; margin: 0; padding: 0; }
+  .writing-list a { display: grid; grid-template-columns: 14rem minmax(0, 1fr) 2rem; gap: 20px; align-items: baseline; padding-block: 16px; border-bottom: 1px solid var(--rule); text-decoration: none; }
+  .writing-list li:first-child a { border-top: 1px solid var(--rule); }
+  .writing-list .wt { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; }
+  .writing-list a:hover .wt { color: var(--red); }
+  .writing-list .arrow { font-size: 18px; }
+  @media (max-width: 700px) { .writing-list a { grid-template-columns: minmax(0, 1fr) 1.5rem; } .writing-list .eyebrow { grid-column: 1 / -1; } }
   .contact-line { font-size: clamp(32px, 5vw, 60px); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; max-width: 18ch; text-wrap: balance; }
 
-  @media (max-width: 860px) { .exp-grid, .ai-intro, .ai-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 1000px) { .ai-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 860px) { .exp-grid, .ai-intro { grid-template-columns: 1fr; } }
+  @media (max-width: 620px) { .ai-grid { grid-template-columns: 1fr; } }
   @media (max-width: 480px) { .hero-stats div { padding-right: 18px; } .hero-stats div + div { padding-left: 18px; } }
   @media (max-width: 600px) {
     .index a { grid-template-columns: minmax(0, 1fr) auto; gap: 12px 16px; }
