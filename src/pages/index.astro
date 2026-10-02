@@ -166,10 +166,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
   <!-- Contact -->
   <section id="contact" class="section dark">
     <div class="wrap">
-      <div class="sec-head"><h2>Contact</h2><span class="eyebrow">Via LinkedIn</span></div>
-      <p class="contact-line">Hiring for email, CRM or lifecycle? Let's talk.</p>
+      <div class="sec-head"><h2>Contact</h2><span class="eyebrow">Email or LinkedIn</span></div>
+      <p class="contact-line">Email me for any enquiries.</p>
+      <p class="contact-email"><a href={`mailto:${site.email}`}>{site.email}</a></p>
       <div class="actions">
-        <a class="btn red" href={site.linkedin} target="_blank" rel="noopener">Message me on LinkedIn</a>
+        <a class="btn red" href={`mailto:${site.email}`}>Email me</a>
+        <a class="btn ghost" href={site.linkedin} target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </div>
   </section>
@@ -282,6 +284,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .article h3 { font-size: 22px; font-weight: 800; letter-spacing: -0.015em; line-height: 1.15; }
   .article p { color: var(--muted); font-size: 15px; flex: 1; }
   .article .read { font-size: 14px; font-weight: 700; color: var(--red); }
+  .contact-email { margin-top: 18px; font-family: var(--mono); font-size: clamp(16px, 2vw, 20px); overflow-wrap: anywhere; }
+  .contact-email a { color: inherit; text-decoration-color: var(--red); text-underline-offset: 4px; }
   .contact-line { font-size: clamp(32px, 5vw, 60px); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; max-width: 18ch; text-wrap: balance; }
 
   @media (max-width: 860px) { .exp-grid, .ai-intro, .ai-grid { grid-template-columns: 1fr; } }

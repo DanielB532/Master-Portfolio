@@ -15,6 +15,7 @@ export const site = {
     { value: '20+', label: 'B2B and B2C brands' },
     { value: 'UK & US', label: 'markets' },
   ],
+  email: 'danielboadu03@gmail.com',
   linkedin: 'https://www.linkedin.com/in/daniel-boadu-5394a0218/',
   // Put your CV at public/cv.pdf and set this to '/cv.pdf' to show the download button
   cv: '',
