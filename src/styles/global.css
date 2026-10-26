@@ -10,6 +10,9 @@
   --rule-dark: #2A2A2E;
   --red: #B32025;
   --red-bright: #E0393F; /* red for small text on black, for contrast */
+  --canvas: #ECECEF;   /* inbox background */
+  --muted: var(--grey);
+  --rule: var(--rule-light);
 
   --sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
   --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;

@@ -4,31 +4,46 @@ import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const work = (await getCollection('work', ({ data }) => !data.draft)).sort((a, b) => a.data.order - b.data.order);
-  return work.map((entry, i) => ({ params: { slug: entry.id }, props: { entry, index: i, nextEntry: work[i + 1] ?? null } }));
+  return work.map((entry, i) => ({ params: { slug: entry.id }, props: { entry, index: i, total: work.length, nextEntry: work[i + 1] ?? null } }));
 }
 
-const { entry, index, nextEntry } = Astro.props;
+const { entry, index, total, nextEntry } = Astro.props;
 const d = entry.data;
 const { Content } = await render(entry);
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
 <Base title={`${d.title} | Daniel Boadu`} description={d.summary}>
-  <section class="cs-hero dark">
+  <section class="cs-hero">
     <div class="wrap">
-      <a class="back eyebrow" href="/#work">← All work</a>
-      <p class="eyebrow red kicker">Case study {pad(index + 1)} · {d.period}</p>
-      <h1>{d.title}</h1>
-      <p class="cs-summary">{d.summary}</p>
-      <div class="hero-grid">
-        <div class="skills-shown">
-          <p class="eyebrow">Skills shown</p>
-          <div class="tags">{d.skillsShown.map((t) => <span class="tag">{t}</span>)}</div>
-          <p class="eyebrow client">{d.client} · {d.tags.join(' · ')}</p>
+      <article class="mail">
+        <div class="mail-bar">
+          <a class="back" href="/#inbox">← Back to inbox</a>
+          <span class="mail-pos eyebrow">{pad(index + 1)} of {total}</span>
         </div>
-        <dl class="facts">
-          {d.facts.map((f) => (<div><dt class="eyebrow">{f.label}</dt><dd>{f.value}</dd></div>))}
-        </dl>
-      </div>
+        <div class="mail-labels">
+          <span class="label-chip">{d.industry}</span>
+          <span class="label-chip plain">Case study</span>
+        </div>
+        <h1>{d.title}</h1>
+        <div class="sender">
+          <span class="avatar" aria-hidden="true">DB</span>
+          <div class="sender-meta">
+            <p><b>Daniel Boadu</b> <span class="muted">· {d.client}</span></p>
+            <p class="muted small">to hiring team · {d.period}</p>
+          </div>
+          <span class="stat-badge"><b>{d.headlineStat.value}</b> {d.headlineStat.label}</span>
+        </div>
+        <p class="cs-summary">{d.summary}</p>
+        <div class="hero-grid">
+          <div class="skills-shown">
+            <p class="eyebrow">Skills shown</p>
+            <div class="tags">{d.skillsShown.map((t) => <span class="tag">{t}</span>)}</div>
+          </div>
+          <dl class="facts">
+            {d.facts.map((f) => (<div><dt class="eyebrow">{f.label}</dt><dd>{f.value}</dd></div>))}
+          </dl>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -88,7 +103,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     <section id="samples" class="section light">
       <div class="wrap">
         <div class="sec-head"><h2>{d.galleryTitle}</h2><span class="eyebrow">{d.galleryCaption ?? `${d.gallery.length} examples`}</span></div>
-        <div class="samples" style={d.galleryCols ? `--gcols:${d.galleryCols}` : undefined}>
+        <div class:list={['samples', { phones: d.galleryFrame === 'phone' }]} style={d.galleryCols ? `--gcols:${d.galleryCols}` : undefined}>
           {d.gallery.map((g) => (
             <figure>
               <a href={g.full ?? g.image} target="_blank" rel="noopener" aria-label={`Open full email: ${g.caption}`}>
@@ -145,26 +160,35 @@ const pad = (n: number) => String(n).padStart(2, '0');
   <section class="section off end-nav">
     <div class="wrap end-inner">
       {nextEntry ? (
-        <a href={`/work/${nextEntry.id}/`} class="next-link"><span class="eyebrow">Next case study</span><span class="nl-title">{nextEntry.data.title} →</span></a>
+        <a href={`/work/${nextEntry.id}/`} class="next-link"><span class="eyebrow">Next message</span><span class="nl-title">{nextEntry.data.title} →</span></a>
       ) : (
-        <a href="/#work" class="next-link"><span class="eyebrow">More case studies coming soon</span><span class="nl-title">Back to all work →</span></a>
+        <a href="/#inbox" class="next-link"><span class="eyebrow">End of inbox</span><span class="nl-title">Back to inbox →</span></a>
       )}
-      <a class="btn red" href="/#contact">Get in touch</a>
+      <a class="btn red" href="/#compose">Reply</a>
     </div>
   </section>
 </Base>
 
 <style>
-  .cs-hero { padding-block: clamp(40px, 7vw, 80px) clamp(56px, 9vw, 104px); }
-  .back { text-decoration: none; display: inline-block; margin-bottom: clamp(32px, 6vw, 64px); }
-  .back:hover { color: var(--white); }
-  .kicker { margin-bottom: 18px; }
-  h1 { font-size: clamp(40px, 7vw, 88px); font-weight: 800; max-width: 15ch; }
-  .cs-summary { margin-top: 20px; font-size: clamp(18px, 2vw, 21px); color: var(--grey-light); max-width: 62ch; }
-  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(28px, 6vw, 80px); margin-top: clamp(32px, 5vw, 56px); align-items: start; }
+  .cs-hero { background: var(--canvas); padding-block: clamp(20px, 3vw, 32px) clamp(28px, 4vw, 48px); }
+  .mail { background: var(--white); border-radius: 16px; padding: clamp(20px, 3vw, 40px); box-shadow: 0 1px 2px rgba(0,0,0,.05); --muted: var(--grey); --rule: var(--rule-light); }
+  .mail-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--rule-light); }
+  .back { text-decoration: none; font-weight: 700; font-size: 14px; color: var(--black); padding: 6px 12px; margin-left: -12px; border-radius: 999px; }
+  .back:hover { background: #F0F0F2; }
+  .mail-labels { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 22px; }
+  .label-chip { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding: 3px 9px; border-radius: 4px; background: #F6DADB; color: #8E1A1E; }
+  .label-chip.plain { background: #F0F0F2; color: var(--grey); }
+  h1 { font-size: clamp(32px, 5vw, 64px); font-weight: 800; max-width: 20ch; margin-top: 14px; }
+  .sender { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: center; margin-top: 24px; }
+  .avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--red); color: var(--white); display: grid; place-items: center; font-weight: 800; font-size: 15px; }
+  .muted { color: var(--grey); }
+  .small { font-size: 13.5px; }
+  .stat-badge { font-size: 13px; color: var(--grey); white-space: nowrap; text-align: right; }
+  .stat-badge b { display: block; font-size: 26px; font-weight: 800; color: var(--black); line-height: 1; }
+  .cs-summary { margin-top: 22px; font-size: clamp(17px, 1.8vw, 20px); color: #26262B; max-width: 64ch; line-height: 1.6; }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 64px); margin-top: clamp(24px, 4vw, 40px); align-items: start; }
   .skills-shown { display: grid; gap: 12px; }
-  .skills-shown .tag { color: var(--white); border-color: #3A3A40; font-size: 13px; }
-  .client { margin-top: 8px; }
+  .skills-shown .tag { color: #3A3A40; border-color: var(--rule-light); border-radius: 6px; font-size: 12.5px; }
   .facts { margin: 0; display: grid; }
   .facts div { padding-block: 14px; border-bottom: 1px solid var(--rule); display: grid; gap: 4px; }
   .facts div:first-child { border-top: 1px solid var(--rule); }
@@ -207,8 +231,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .gallery figcaption { margin-top: 12px; }
   .samples { display: grid; grid-template-columns: repeat(var(--gcols, 4), minmax(0, 1fr)); gap: 20px; }
   .samples figure { margin: 0; display: grid; gap: 10px; align-content: start; }
-  .samples a { display: block; border: 1px solid var(--rule); overflow: hidden; background: var(--white); transition: border-color .15s, transform .15s; }
-  .samples a:hover { border-color: var(--black); transform: translateY(-2px); }
+  .samples a { display: block; overflow: hidden; background: var(--white); border: 1px solid var(--rule-light); border-radius: 10px; transition: transform .2s, box-shadow .2s; }
+  .samples.phones a { border: 7px solid var(--black); border-top-width: 22px; border-radius: 26px; box-shadow: 0 10px 28px rgba(0,0,0,.14); position: relative; transition: transform .2s, box-shadow .2s; }
+  .samples.phones a::before { content: ''; position: absolute; top: -15px; left: 50%; width: 52px; height: 6px; margin-left: -26px; border-radius: 6px; background: #2A2A2E; }
+  .samples a:hover { transform: translateY(-4px); box-shadow: 0 16px 36px rgba(0,0,0,.18); }
   .samples figcaption { font-size: 14px; color: var(--muted); }
   .samples-note { margin-top: 20px; }
   .results { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
@@ -234,6 +260,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .nl-title { font-size: clamp(22px, 3vw, 32px); font-weight: 800; letter-spacing: -0.02em; }
   .next-link:hover .nl-title { color: var(--red); }
 
+  @media (max-width: 640px) { .sender { grid-template-columns: auto minmax(0, 1fr); } .stat-badge { grid-column: 2; text-align: left; } }
   @media (max-width: 1080px) { .phases { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 600px) { .phases { grid-template-columns: 1fr; } }
   @media (max-width: 960px) { .samples { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

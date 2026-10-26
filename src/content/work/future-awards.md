@@ -41,6 +41,7 @@ phases:
       - The whole NAMM journey was written and built before launch, so nothing was rushed at the deadline.
 galleryTitle: The emails
 galleryCaption: B2B and B2C examples
+galleryFrame: phone
 gallery:
   - { image: /work/future/namm-entry-guide-thumb.jpg, full: /work/future/namm-entry-guide.jpg, caption: "Best of Show at NAMM · Official entry guide", alt: "Best of Show Awards at NAMM 2026 email: your official entry guide, with entry fees, deadline and FAQs" }
   - { image: /work/future/namm-benefits-thumb.jpg, full: /work/future/namm-benefits.jpg, caption: "Best of Show at NAMM · What's in it for your business", alt: "Best of Show Awards at NAMM 2026 email setting out the benefits of entering" }

@@ -43,7 +43,8 @@ const work = defineCollection({
     // When set, the gallery gets its own section (for work samples) instead of sitting under the results
     galleryTitle: z.string().optional(),
     galleryCaption: z.string().optional(),
-    galleryCols: z.number().optional(),      // columns for the samples grid on desktop (default 4)      // e.g. "Event 28 Sep"
+    galleryCols: z.number().optional(),
+    galleryFrame: z.enum(['phone', 'none']).default('none'),   // 'phone' shows each email inside a phone frame      // columns for the samples grid on desktop (default 4)      // e.g. "Event 28 Sep"
     results: z
       .object({
         caption: z.string(),

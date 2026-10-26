@@ -16,6 +16,8 @@ export const site = {
     { value: 'UK & US', label: 'markets' },
   ],
   email: 'danielboadu03@gmail.com',
+  // Shown in the scrolling "worked with" strip
+  brands: ['Shoptalk', 'Groceryshop', 'Fintech Meetup', 'Marie Claire', 'Ideal Home', 'OANDA', 'SCN', 'AV Technology', 'Sound & Video Contractor', 'Best of Show at NAMM', 'Layton Media', 'Vanquish Holdings'],
   linkedin: 'https://www.linkedin.com/in/daniel-boadu-5394a0218/',
   // Put your CV at public/cv.pdf and set this to '/cv.pdf' to show the download button
   cv: '',
