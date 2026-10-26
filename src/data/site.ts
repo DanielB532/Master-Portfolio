@@ -47,6 +47,11 @@ export const skills = [
     proof: { label: 'Heat map check', href: '/work/stf26-cold-outbound/#results' },
   },
   {
+    name: 'Bespoke list building',
+    text: 'Building hyper-personalised, bespoke and launch lists for campaigns, so each audience is built around who they are and gets messaging that fits.',
+    proof: { label: 'New in my role at Hyve', href: '' },
+  },
+  {
     name: 'AI & automation',
     text: 'Building AI assistants and workflows that remove repetitive campaign work, from link tagging to briefing and QA.',
     proof: { label: 'AI builds', href: '/#ai' },
@@ -203,7 +208,7 @@ export const experience: {
 
 // From the CV. Shown as tags under the skills section.
 export const coreSkills = [
-  'Campaign execution & scheduling', 'Lifecycle & nurture journeys', 'Segmentation & targeting',
+  'Campaign execution & scheduling', 'Lifecycle & nurture journeys', 'Segmentation & targeting', 'Bespoke & launch list building',
   'Personalisation', 'QA (links, tracking, tokens, dynamic content, devices)', 'List hygiene & deliverability',
   'Performance reporting', 'A/B testing', 'Tone of voice', 'Conversion copywriting',
   'Social-to-email funnels', 'Stakeholder coordination',
