@@ -8,12 +8,29 @@ import '@fontsource/ibm-plex-mono/500.css';
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import Wordmark from '../components/Wordmark.astro';
-import { site } from '../data/site';
+import { site, aiBuilds, experience, skills, coreSkills } from '../data/site';
+import { getCollection } from 'astro:content';
 
 interface Props { title?: string; description?: string; search?: boolean; }
 const fullName = `${site.firstName} ${site.lastName}`;
 const { title = `${fullName} | ${site.title}`, description = site.intro, search = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+
+// Everything the top-bar search can find. Built at build time, shipped as JSON.
+const work = (await getCollection('work', ({ data }) => !data.draft)).sort((a, b) => a.data.order - b.data.order);
+const writing = (await getCollection('writing', ({ data }) => !data.draft)).sort((a, b) => a.data.order - b.data.order);
+const searchIndex = [
+  ...work.map((w) => ({ type: 'Case study', title: w.data.title, sub: `${w.data.client} · ${w.data.headlineStat.value} ${w.data.headlineStat.label}`, href: `/work/${w.id}/`, k: [w.data.summary, w.data.industry, ...w.data.tags, ...w.data.skillsShown, ...w.data.facts.map((f) => f.value)].join(' ') })),
+  ...aiBuilds.map((b) => ({ type: 'AI tool', title: b.name, sub: `${b.where} · ${b.status}`, href: b.link && b.link.href.startsWith('/') ? b.link.href : '/#automations', k: `${b.solution} ${b.built} ai automation gpt` })),
+  { type: 'AI tool', title: 'UTM link builder (try it)', sub: 'Working demo on this site', href: '/#utm', k: 'utm tagging links hubspot tracking demo tool try' },
+  ...experience.map((e) => ({ type: 'Experience', title: `${e.role}, ${e.company}`, sub: e.period, href: '/#sent', k: `${e.text} ${(e.highlights ?? []).join(' ')} ${(e.tools ?? []).join(' ')} ${e.type}` })),
+  ...skills.map((s) => ({ type: 'Skill', title: s.name, sub: s.proof.label, href: s.proof.href || '/#top', k: s.text })),
+  ...site.tools.flatMap((t) => t.items.map((i) => ({ type: 'Tool', title: i, sub: t.group, href: '/#integrations', k: t.group }))),
+  ...coreSkills.map((c) => ({ type: 'Skill', title: c, sub: 'Core skill', href: '/#integrations', k: '' })),
+  ...writing.map((w) => ({ type: 'Article', title: w.data.short, sub: `${w.data.topic} · ${w.data.date}`, href: `/writing/${w.id}/`, k: `${w.data.title} ${w.data.summary}` })),
+  { type: 'Page', title: 'Contact Daniel', sub: 'Compose an email', href: '/#compose', k: 'contact email hire enquiries message reach linkedin' },
+  { type: 'Page', title: 'Recommendation', sub: 'Client reply', href: '/#replies', k: 'testimonial review reference recommendation' },
+];
 ---
 <!doctype html>
 <html lang="en-GB">
@@ -36,10 +53,15 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <header class="topbar" transition:persist>
       <div class="topbar-inner">
         <a href="/" class="home" aria-label={`${fullName}, inbox`}><Wordmark /></a>
-        <label class="search" for="inbox-search">
-          <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M13 13l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          <input id="inbox-search" type="search" placeholder="Search Daniel's work" autocomplete="off" />
-        </label>
+        <div class="search-wrap">
+          <label class="search" for="inbox-search">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M13 13l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <input id="inbox-search" type="search" placeholder="Search work, AI tools, skills…" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="search-results" aria-autocomplete="list" />
+            <kbd class="kbd" aria-hidden="true">/</kbd>
+          </label>
+          <div id="search-results" class="results" role="listbox" hidden></div>
+        </div>
+        <script type="application/json" id="search-index" set:html={JSON.stringify(searchIndex)} />
         <a class="compose-btn" href="/#compose">
           <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17l1-4L13.5 3.5a2 2 0 012.8 2.8L6.8 15.8 3 17z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
           <span>Compose</span>
@@ -57,31 +79,149 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 </html>
 
 <script>
-  // Search lives in the top bar on every page. Off the homepage it sends you to the inbox with the query.
-  document.addEventListener('astro:page-load', () => {
+  // Instant search: type to see matching work, AI tools, roles, tools and articles. Enter or click opens one.
+  type Item = { type: string; title: string; sub: string; href: string; k: string };
+  const ORDER = ['Case study', 'AI tool', 'Experience', 'Skill', 'Tool', 'Article', 'Page'];
+  const SUGGEST = ['AI', 'HubSpot', '$50K', 'Shoptalk', 'Segmentation', 'Copywriting'];
+  const esc = (t: string) => t.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
+  const mark = (text: string, terms: string[]) => {
+    let out = esc(text);
+    terms.forEach((t) => { if (t) out = out.replace(new RegExp(`(${t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'ig'), '<mark>$1</mark>'); });
+    return out;
+  };
+
+  function setup() {
     const input = document.getElementById('inbox-search') as HTMLInputElement | null;
-    if (!input || input.dataset.bound) return;
+    const box = document.getElementById('search-results');
+    const raw = document.getElementById('search-index');
+    if (!input || !box || !raw || input.dataset.bound) return;
     input.dataset.bound = '1';
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && location.pathname !== '/') {
-        location.href = `/?q=${encodeURIComponent(input.value)}#inbox`;
+    const items: Item[] = JSON.parse(raw.textContent || '[]');
+    let active = -1;
+    let shown: Item[] = [];
+
+    const score = (it: Item, terms: string[]) => {
+      const title = it.title.toLowerCase();
+      const hay = `${title} ${it.sub} ${it.k} ${it.type}`.toLowerCase();
+      if (!terms.every((t) => hay.includes(t))) return 0;
+      let s = 1;
+      terms.forEach((t) => { if (title.startsWith(t)) s += 6; else if (title.includes(t)) s += 3; else if (it.sub.toLowerCase().includes(t)) s += 1; });
+      return s + (ORDER.length - ORDER.indexOf(it.type)) * 0.1;
+    };
+
+    const open = (on: boolean) => { box.hidden = !on; input.setAttribute('aria-expanded', String(on)); };
+    const highlight = (i: number) => {
+      active = i;
+      box.querySelectorAll<HTMLElement>('.res').forEach((el, n) => {
+        el.classList.toggle('on', n === i);
+        el.setAttribute('aria-selected', String(n === i));
+        if (n === i) el.scrollIntoView({ block: 'nearest' });
+      });
+    };
+
+    const render = () => {
+      const q = input.value.trim().toLowerCase();
+      if (!q) {
+        shown = [];
+        box.innerHTML = `<p class="res-hint">Try searching for</p><div class="res-sugs">${SUGGEST.map((s) => `<button type="button" class="res-sug" data-q="${esc(s)}">${esc(s)}</button>`).join('')}</div><p class="res-foot"><span><kbd>↑</kbd><kbd>↓</kbd> to move</span><span><kbd>Enter</kbd> to open</span><span><kbd>/</kbd> to search</span></p>`;
+        open(true);
+        return;
       }
+      const terms = q.split(/\s+/).filter(Boolean);
+      const scored = items.map((it) => ({ it, s: score(it, terms) })).filter((x) => x.s > 0).sort((a, b) => b.s - a.s).slice(0, 8);
+      shown = scored.map((x) => x.it);
+      const best: Record<string, number> = {};
+      scored.forEach((x) => { best[x.it.type] = Math.max(best[x.it.type] ?? 0, x.s); });
+      if (!shown.length) {
+        box.innerHTML = `<p class="res-hint">No matches for “${esc(input.value.trim())}”. Try <button type="button" class="res-sug inline" data-q="AI">AI</button> or <button type="button" class="res-sug inline" data-q="HubSpot">HubSpot</button>.</p>`;
+        open(true);
+        active = -1;
+        return;
+      }
+      const groups = Object.keys(best).sort((a, b) => best[b] - best[a]);
+      let n = 0;
+      const ordered: Item[] = [];
+      box.innerHTML = groups.map((g) => `<p class="res-group">${({ 'Case study': 'Case studies', 'AI tool': 'AI tools', Experience: 'Experience', Skill: 'Skills', Tool: 'Tools', Article: 'Writing', Page: 'Pages' } as Record<string, string>)[g] ?? g}</p>` + shown.filter((it) => it.type === g).map((it) => {
+        ordered.push(it);
+        return `<a class="res" role="option" id="res-${n}" data-i="${n++}" href="${it.href}"><span class="res-t">${mark(it.title, terms)}</span><span class="res-s">${mark(it.sub, terms)}</span><span class="res-go" aria-hidden="true">↵</span></a>`;
+      }).join('')).join('');
+      shown = ordered;
+      open(true);
+      highlight(0);
+    };
+
+    const go = (it?: Item) => {
+      if (!it) return;
+      open(false);
+      input.blur();
+      const url = new URL(it.href, location.href);
+      if (url.pathname === location.pathname && url.hash) {
+        document.querySelector(url.hash)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+        history.replaceState(null, '', url.hash);
+      } else {
+        location.href = it.href;
+      }
+    };
+
+    input.addEventListener('focus', render);
+    input.addEventListener('input', render);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown') { e.preventDefault(); if (shown.length) highlight((active + 1) % shown.length); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); if (shown.length) highlight((active - 1 + shown.length) % shown.length); }
+      else if (e.key === 'Enter') { e.preventDefault(); go(shown[Math.max(active, 0)]); }
+      else if (e.key === 'Escape') { open(false); input.blur(); }
     });
-    input.addEventListener('input', () => {
-      document.dispatchEvent(new CustomEvent('inbox:search', { detail: input.value }));
+    box.addEventListener('mousedown', (e) => e.preventDefault()); // keep focus while clicking
+    box.addEventListener('click', (e) => {
+      const t = e.target as HTMLElement;
+      const sug = t.closest<HTMLElement>('.res-sug');
+      if (sug) { input.value = sug.dataset.q ?? ''; render(); input.focus(); return; }
+      const a = t.closest<HTMLAnchorElement>('.res');
+      if (a) { e.preventDefault(); go(shown[Number(a.dataset.i)]); }
     });
-  });
+    box.addEventListener('mousemove', (e) => {
+      const a = (e.target as HTMLElement).closest<HTMLElement>('.res');
+      if (a && Number(a.dataset.i) !== active) highlight(Number(a.dataset.i));
+    });
+    document.addEventListener('click', (e) => { if (!(e.target as HTMLElement).closest('.search-wrap')) open(false); });
+    document.addEventListener('keydown', (e) => {
+      const typing = /input|textarea|select/i.test((document.activeElement as HTMLElement)?.tagName ?? '');
+      if ((e.key === '/' && !typing) || (e.key.toLowerCase() === 'k' && (e.metaKey || e.ctrlKey))) { e.preventDefault(); input.focus(); }
+    });
+  }
+  document.addEventListener('astro:page-load', setup);
+  document.addEventListener('astro:after-swap', () => { const b = document.getElementById('search-results'); if (b) b.hidden = true; });
 </script>
 
 <style>
   .topbar { position: sticky; top: 0; z-index: 30; background: var(--black); color: var(--white); border-bottom: 1px solid var(--rule-dark); padding-top: env(safe-area-inset-top, 0px); }
   .topbar-inner { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: clamp(12px, 3vw, 32px); padding: 12px var(--gutter); max-width: 1440px; margin: 0 auto; }
   .home { text-decoration: none; min-width: 0; }
-  .search { display: flex; align-items: center; gap: 10px; max-width: 560px; width: 100%; justify-self: center; background: var(--black-2); border: 1px solid var(--rule-dark); border-radius: 999px; padding: 9px 16px; color: var(--grey-light); transition: border-color .15s; }
+  .search-wrap { position: relative; max-width: 560px; width: 100%; justify-self: center; }
+  .search { display: flex; align-items: center; gap: 10px; width: 100%; background: var(--black-2); border: 1px solid var(--rule-dark); border-radius: 999px; padding: 9px 16px; color: var(--grey-light); transition: border-color .15s; }
   .search:focus-within { border-color: var(--grey-light); }
   .search svg { width: 16px; height: 16px; flex-shrink: 0; }
   .search input { all: unset; flex: 1; min-width: 0; font-size: 14px; color: var(--white); }
   .search input::placeholder { color: var(--grey-light); }
+  .search input::-webkit-search-cancel-button { filter: invert(1); }
+  .kbd, .results kbd { font-family: var(--mono); font-size: 11px; color: var(--grey-light); border: 1px solid var(--rule-dark); border-radius: 5px; padding: 1px 6px; }
+  .search:focus-within .kbd { display: none; }
+  .results { position: absolute; top: calc(100% + 8px); left: 0; right: 0; max-height: min(70vh, 520px); overflow-y: auto; background: var(--white); color: var(--black); border-radius: 14px; box-shadow: 0 18px 48px rgba(0,0,0,.28); padding: 8px; z-index: 50; }
+  .results :global(.res-group) { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); padding: 10px 10px 4px; }
+  .results :global(.res) { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; padding: 9px 10px; border-radius: 8px; text-decoration: none; color: var(--black); }
+  .results :global(.res-t) { font-weight: 700; font-size: 14.5px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .results :global(.res-s) { grid-column: 1; font-size: 13px; color: var(--grey); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .results :global(.res-go) { grid-column: 2; grid-row: 1 / span 2; align-self: center; color: var(--grey); opacity: 0; }
+  .results :global(.res.on) { background: #F4F4F5; box-shadow: inset 3px 0 0 var(--red); }
+  .results :global(.res.on .res-go) { opacity: 1; color: var(--red); }
+  .results :global(mark) { background: #F6DADB; color: inherit; border-radius: 2px; padding: 0 1px; }
+  .results :global(.res-hint) { padding: 10px; font-size: 14px; color: #3A3A40; }
+  .results :global(.res-sugs) { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 10px 10px; }
+  .results :global(.res-sug) { all: unset; cursor: pointer; font-size: 13px; padding: 6px 12px; border: 1px solid var(--rule-light); border-radius: 999px; }
+  .results :global(.res-sug:hover) { border-color: var(--black); }
+  .results :global(.res-sug.inline) { padding: 1px 8px; }
+  .results :global(.res-foot) { display: flex; flex-wrap: wrap; gap: 6px 16px; border-top: 1px solid var(--rule-light); margin-top: 4px; padding: 10px 10px 4px; font-size: 12px; color: var(--grey); }
+  .results :global(.res-foot kbd) { color: var(--grey); border-color: var(--rule-light); margin-right: 3px; }
   .compose-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--red); color: var(--white); text-decoration: none; font-weight: 700; font-size: 14px; padding: 10px 18px; border-radius: 999px; transition: background .15s, transform .15s; }
   .compose-btn:hover { background: #961A1F; transform: translateY(-1px); }
   .compose-btn svg { width: 16px; height: 16px; }
@@ -90,7 +230,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   .foot .eyebrow { color: var(--grey-light); }
   @media (max-width: 760px) {
     .topbar-inner { grid-template-columns: minmax(0, 1fr) auto; }
-    .search { grid-column: 1 / -1; grid-row: 2; max-width: none; }
+    .search-wrap { grid-column: 1 / -1; grid-row: 2; max-width: none; }
+    .kbd { display: none; }
+    .results :global(.res-foot) { display: none; }
     .compose-btn span { display: none; }
     .compose-btn { padding: 10px 12px; }
   }

@@ -7,12 +7,12 @@ const work = (await getCollection('work', ({ data }) => !data.draft)).sort((a, b
 const writing = (await getCollection('writing', ({ data }) => !data.draft)).sort((a, b) => a.data.order - b.data.order);
 const industries = [...new Set(work.map((w) => w.data.industry))];
 const folders = [
-  { id: 'inbox', label: 'Inbox', count: work.length, icon: 'inbox', note: 'Case studies' },
-  { id: 'automations', label: 'Automations', count: aiBuilds.length, icon: 'bolt', note: 'AI tools' },
-  { id: 'sent', label: 'Sent', count: experience.length, icon: 'send', note: 'Experience' },
-  { id: 'replies', label: 'Replies', count: 1, icon: 'reply', note: 'Recommendation' },
-  { id: 'integrations', label: 'Integrations', count: site.tools.reduce((n, t) => n + t.items.length, 0), icon: 'plug', note: 'Tools & skills' },
-  { id: 'archive', label: 'Archive', count: writing.length, icon: 'archive', note: 'Writing' },
+  { id: 'inbox', label: 'Case studies', count: work.length, icon: 'inbox', note: 'Inbox' },
+  { id: 'automations', label: 'AI tools', count: aiBuilds.length, icon: 'bolt', note: 'Automations' },
+  { id: 'sent', label: 'Experience', count: experience.length, icon: 'send', note: 'Sent' },
+  { id: 'replies', label: 'Recommendation', count: 1, icon: 'reply', note: 'Replies' },
+  { id: 'integrations', label: 'Tools & skills', count: site.tools.reduce((n, t) => n + t.items.length, 0), icon: 'plug', note: 'Integrations' },
+  { id: 'archive', label: 'Writing', count: writing.length, icon: 'archive', note: 'Archive' },
 ];
 const icons: Record<string, string> = {
   inbox: 'M3 11l2.5-6h9L17 11v5H3v-5zm0 0h4l1 2h4l1-2h4',
@@ -32,7 +32,7 @@ const initials = `${site.firstName[0]}${site.lastName[0]}`;
       <nav>
         <a href="#top" class="folder active" data-folder="top">
           <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14v10H3zM3 5l7 6 7-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-          <span>New message<small>About me</small></span><b class="dot-new">1</b>
+          <span>About me<small>New message</small></span><b class="dot-new">1</b>
         </a>
         {folders.map((f) => (
           <a href={`#${f.id}`} class="folder" data-folder={f.id}>
@@ -101,7 +101,7 @@ const initials = `${site.firstName[0]}${site.lastName[0]}`;
       <!-- 2. Inbox: case studies -->
       <section id="inbox" class="pane" data-pane="inbox">
         <header class="pane-head">
-          <div><h2>Inbox</h2><p class="muted small">Case studies · {work.length} conversations</p></div>
+          <div><h2>Case studies</h2><p class="muted small">Inbox · {work.length} conversations</p></div>
           <div class="chips" role="group" aria-label="Filter by industry">
             <button type="button" class="chip on" data-filter="all">All</button>
             {industries.map((ind) => <button type="button" class="chip" data-filter={ind}>{ind}</button>)}
@@ -129,7 +129,7 @@ const initials = `${site.firstName[0]}${site.lastName[0]}`;
       <!-- 3. Automations: AI builds and a working UTM builder -->
       <section id="automations" class="pane dark-pane" data-pane="automations">
         <header class="pane-head">
-          <div><h2>Automations</h2><p class="small grey">AI tools I've built · {aiBuilds.length} running</p></div>
+          <div><h2>AI tools</h2><p class="small grey">Automations I've built · {aiBuilds.length} running</p></div>
         </header>
         <p class="statement">I use AI to take the repetitive work out of marketing, so more time goes on the strategy and the copy.</p>
         <p class="grey ai-note">Every tool here started as a real problem in my day-to-day work. I use AI in my copywriting too: it speeds up first drafts, as it did on the <a href="/work/stf26-cold-outbound/">Shoptalk cold emails</a>, while the strategy and final edit stay mine.</p>
@@ -175,7 +175,7 @@ const initials = `${site.firstName[0]}${site.lastName[0]}`;
       <!-- 4. Sent: experience -->
       <section id="sent" class="pane" data-pane="sent">
         <header class="pane-head">
-          <div><h2>Sent</h2><p class="muted small">Experience · {experience.length} roles · click a role for results</p></div>
+          <div><h2>Experience</h2><p class="muted small">Sent · {experience.length} roles · click a role for results</p></div>
           <p class="eyebrow">{education.name}, {education.result}</p>
         </header>
         <ul class="list">
@@ -205,7 +205,7 @@ const initials = `${site.firstName[0]}${site.lastName[0]}`;
 
       <!-- 5. Replies: recommendation -->
       <section id="replies" class="pane" data-pane="replies">
-        <header class="pane-head"><div><h2>Replies</h2><p class="muted small">What clients say</p></div></header>
+        <header class="pane-head"><div><h2>Recommendation</h2><p class="muted small">Replies · what clients say</p></div></header>
         <div class="thread">
           <div class="reply-meta">
             <span class="avatar alt" aria-hidden="true">{recommendation.name.split(' ').map((w) => w[0]).join('').slice(0, 2)}</span>
@@ -217,7 +217,7 @@ const initials = `${site.firstName[0]}${site.lastName[0]}`;
 
       <!-- 6. Integrations: tools and core skills -->
       <section id="integrations" class="pane" data-pane="integrations">
-        <header class="pane-head"><div><h2>Integrations</h2><p class="muted small">The tools I work in, and the skills I bring to them</p></div></header>
+        <header class="pane-head"><div><h2>Tools &amp; skills</h2><p class="muted small">Integrations · the tools I work in, and the skills I bring to them</p></div></header>
         <div class="apps">
           {site.tools.map((t) => (
             <div class="app-group">
@@ -232,7 +232,7 @@ const initials = `${site.firstName[0]}${site.lastName[0]}`;
 
       <!-- 7. Archive: writing -->
       <section id="archive" class="pane" data-pane="archive">
-        <header class="pane-head"><div><h2>Archive</h2><p class="muted small">Earlier long-form articles</p></div></header>
+        <header class="pane-head"><div><h2>Writing</h2><p class="muted small">Archive · earlier long-form articles</p></div></header>
         <ul class="list">
           {writing.map((w) => (
             <li class="row" data-search={`${w.data.title} ${w.data.topic} ${w.data.summary}`.toLowerCase()}>
@@ -302,7 +302,6 @@ const initials = `${site.firstName[0]}${site.lastName[0]}`;
       if (empty) empty.hidden = inboxRows.some((r) => !r.hidden);
       document.querySelectorAll<HTMLElement>('[data-filter]').forEach((b) => b.classList.toggle('on', b.dataset.filter === industry));
     };
-    document.addEventListener('inbox:search', (e) => { query = String((e as CustomEvent).detail).trim().toLowerCase(); apply(); });
     document.querySelectorAll<HTMLElement>('[data-filter]').forEach((b) => b.addEventListener('click', () => {
       const f = b.dataset.filter ?? 'all';
       industry = industry === f && f !== 'all' ? 'all' : f;
@@ -310,8 +309,6 @@ const initials = `${site.firstName[0]}${site.lastName[0]}`;
       if (b.classList.contains('label-btn')) document.getElementById('inbox')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
     }));
     document.querySelector('[data-clear]')?.addEventListener('click', () => { query = ''; if (searchInput) searchInput.value = ''; industry = 'all'; apply(); });
-    const q = new URLSearchParams(location.search).get('q');
-    if (q && searchInput) { searchInput.value = q; query = q.toLowerCase(); apply(); }
 
     // Highlight the folder for the section in view
     const links = Array.from(document.querySelectorAll<HTMLElement>('.folder'));
