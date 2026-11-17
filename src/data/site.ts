@@ -73,13 +73,13 @@ export const aiBuilds: {
     link: { label: 'Watch the demo on LinkedIn', href: 'https://lnkd.in/p/e6pUZh2U' },
   },
   {
-    name: 'Email performance analyst',
+    name: 'Weekly Reporting Agent',
     where: 'Hyve Group',
     status: 'In use',
-    built: 'Custom agent (ChatGPT)',
+    built: 'Custom GPT (ChatGPT)',
     // link: { label: 'See the post on LinkedIn', href: '' },  // add once the post is up
-    problem: 'Campaign stats sat in reports that took time to turn into something the team could act on.',
-    solution: 'An agent that turns email stats into a ready-made PowerPoint and highlights where our emails can improve, which has helped the team spot and fix weak points.',
+    problem: 'Weekly email reports go to senior leadership, but turning HubSpot stats into a clear report took 2 to 3 hours every week.',
+    solution: 'An agent that turns HubSpot screenshots or PDFs into a manager-ready PowerPoint with key metrics, benchmark flags and recommendations, and supports or challenges my own observations. It now takes 20 to 30 minutes.',
   },
   {
     name: 'Fintech Meetup email enhancer',
