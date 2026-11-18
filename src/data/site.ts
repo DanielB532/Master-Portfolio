@@ -78,7 +78,7 @@ export const aiBuilds: {
     where: 'Hyve Group',
     status: 'In use',
     built: 'Custom GPT (ChatGPT)',
-    // link: { label: 'See the post on LinkedIn', href: '' },  // add once the post is up
+    link: { label: 'See the post on LinkedIn', href: 'https://lnkd.in/p/emzUN4Rp' },
     problem: 'Weekly email reports go to senior leadership, but turning HubSpot stats into a clear report took 2 to 3 hours every week.',
     solution: 'An agent that turns HubSpot screenshots or PDFs into a manager-ready PowerPoint with key metrics, benchmark flags and recommendations, and supports or challenges my own observations. It cut the weekly report from 2 to 3 hours to 20 to 30 minutes.',
     image: { src: '/ai/weekly-reporting-agent.webp', alt: 'How the Weekly Reporting Agent works: setup, input, analysis, findings, recommendations and the finished PowerPoint report' },
